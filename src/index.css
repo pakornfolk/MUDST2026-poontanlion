@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-nike-canvas text-nike-ink dark:bg-nike-dark-surface dark:text-white font-sans antialiased;
+  }
+
+  /* Nike uses 0 letter-spacing on Futura/Inter — reset any browser defaults */
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0;
+  }
+}
+
+/* Monochrome scrollbar — Nike-style minimal chrome */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #cacacb;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #707072;
+}
+
+/* Campaign display text — Bebas Neue burned into hero photography */
+@layer utilities {
+  .text-campaign {
+    font-family: 'Bebas Neue', 'Anton', 'Impact', sans-serif;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Micro-animation for fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Nike tap-collapse feedback for primary CTAs */
+@keyframes tapCollapse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.active\:tap-collapse:active {
+  animation: tapCollapse 0.2s ease-out;
+}
+
+/* Focus ring matching Nike search-pill-focused: 2px ink border + soft halo */
+@layer utilities {
+  .nike-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-nike-ink focus:ring-offset-2 focus:ring-offset-nike-soft-cloud;
+  }
+}

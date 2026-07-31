@@ -1,0 +1,15 @@
+{
+  "short_name": "Victory Room",
+  "name": "Victory Room - Luxury Hotel Booking",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#1a2129",
+  "theme_color": "#1c69d4",
+  "display": "standalone"
+}
