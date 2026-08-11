@@ -1,4 +1,4 @@
-export type UserRole = 'user' | 'admin';
+export type UserRole = 'admin';
 
 export interface User {
   id: string;
@@ -11,119 +11,195 @@ export interface User {
   created_at?: string;
 }
 
-export type RoomType = 'Deluxe' | 'Executive Suite' | 'Presidential Suite' | 'Family Suite' | 'Villa';
-export type RoomStatus = 'Available' | 'Reserved' | 'Full' | 'Occupied' | 'Maintenance';
-
-export interface RoomImage {
-  id: string;
-  room_id: string;
-  image_url: string;
-  is_cover: boolean;
-  display_order?: number;
-}
+export type RoomType = 'Standard Studio' | 'Deluxe Studio' | '1-Bedroom Suite' | 'Corner Suite' | 'Penthouse';
+export type RoomStatus = 'Available' | 'Reserved' | 'Occupied' | 'Maintenance';
 
 export interface Room {
   id: string;
-  room_number: string;
-  room_name: string;
-  room_type: RoomType;
+  roomNumber: string;
+  floor: number;
+  roomName: string;
+  roomType: RoomType;
   description: string;
   capacity: number;
   price: number;
   status: RoomStatus;
-  amenities: string[];
-  size_sqm: number;
-  bed_type: string;
-  cover_image?: string;
-  gallery?: string[];
-  created_at?: string;
+  amenities: string;
+  sizeSqm: number;
+  bedType: string;
+  coverImage?: string;
+  gallery?: string;
+  currentTenantId?: string;
+  currentTenantName?: string;
+  prevWaterMeter?: number;
+  currWaterMeter?: number;
+  prevElectricMeter?: number;
+  currElectricMeter?: number;
+  createdAt?: string;
 }
 
-export type BookingStatus = 'Pending' | 'Waiting Verification' | 'Paid' | 'Completed' | 'Cancelled' | 'Rejected';
+// ----------------------------------------------------------------------
+// APARTMENT MANAGEMENT SPECIFIC TYPES
+// ----------------------------------------------------------------------
+
+export type BillingCycle = 'monthly' | 'yearly';
+
+export interface Tenant {
+  id: string;
+  fullname: string;
+  phone: string;
+  email: string;
+  idCardPassport: string;
+  emergencyContact: string;
+  unitId?: string;
+  unitNumber?: string;
+  createdAt: string;
+}
+
+export type LeaseStatus = 'Active' | 'Terminated' | 'Expired';
+
+export interface Lease {
+  id: string;
+  tenantId: string;
+  tenantName: string;
+  tenantPhone: string;
+  roomId: string;
+  roomNumber: string;
+  checkInDate: string;
+  checkOutDate: string;
+  rentAmount: number;
+  billingCycle: BillingCycle;
+  depositAmount: number;
+  status: LeaseStatus;
+  notes?: string;
+  createdAt: string;
+}
+
+export type BillStatus = 'Pending' | 'Paid';
+
+export interface UtilityBill {
+  id: string;
+  invoiceNo: string;
+  leaseId: string;
+  roomId: string;
+  roomNumber: string;
+  tenantName: string;
+  billingMonth: string;
+  rentAmount: number;
+  prevWaterMeter: number;
+  currWaterMeter: number;
+  waterRate: number;
+  waterAmount: number;
+  prevElectricMeter: number;
+  currElectricMeter: number;
+  electricRate: number;
+  electricAmount: number;
+  commonFee: number;
+  totalAmount: number;
+  status: BillStatus;
+  paymentDate?: string;
+  slipImage?: string;
+  createdAt: string;
+}
+
+export type MaintenanceCategory = 'Light bulb replacement' | 'Air-con servicing' | 'Plumbing' | 'Electrical' | 'General Repair';
+export type MaintenancePriority = 'Low' | 'Medium' | 'High';
+export type MaintenanceTaskStatus = 'Pending' | 'In Progress' | 'Completed';
+export type ReminderFrequency = 'None' | 'Monthly' | 'Quarterly' | 'Every 6 Months' | 'Yearly';
+
+export interface SupplyUsage {
+  supply_id: string;
+  name: string;
+  quantity: number;
+  unit_cost: number;
+}
+
+export interface SupplyItem {
+  id: string;
+  name: string;
+  category: string;
+  stockQuantity: number;
+  unitCost: number;
+  unitName: string;
+}
+
+export interface MaintenanceTask {
+  id: string;
+  taskNo: string;
+  roomId: string;
+  roomNumber: string;
+  category: MaintenanceCategory;
+  description: string;
+  reportedDate: string;
+  dueDate: string;
+  priority: MaintenancePriority;
+  status: MaintenanceTaskStatus;
+  assignedWorker: string;
+  suppliesUsed: string; // JSON string from backend
+  laborCost: number;
+  totalCost: number;
+  recurringReminder: ReminderFrequency;
+  createdAt: string;
+  completedAt?: string;
+}
+
+export interface MaintenanceLog {
+  id: string;
+  roomId: string;
+  roomNumber: string;
+  date: string;
+  taskNo: string;
+  category: MaintenanceCategory;
+  description: string;
+  suppliesSummary: string;
+  totalCost: number;
+  performedBy: string;
+}
+
+export interface ScheduledReminder {
+  id: string;
+  title: string;
+  category: MaintenanceCategory;
+  roomId?: string;
+  roomNumber?: string;
+  frequency: ReminderFrequency;
+  lastTriggered?: string;
+  nextDueDate: string;
+  isActive: boolean;
+}
 
 export interface Booking {
   id: string;
-  booking_no: string;
-  user_id: string;
-  room_id: string;
-  room?: Room;
-  check_in: string;
-  check_out: string;
-  guest_count: number;
-  total_price: number;
-  discount_amount?: number;
-  promo_code?: string;
-  guest_name: string;
-  guest_phone: string;
-  guest_email: string;
-  special_requests?: string;
-  status: BookingStatus;
-  created_at: string;
-  slip_image?: string;
-}
-
-export type PaymentStatus = 'Pending' | 'Approved' | 'Rejected';
-
-export interface Payment {
-  id: string;
-  booking_id: string;
-  slip_image: string;
-  payment_date: string;
-  payment_status: PaymentStatus;
-  created_at?: string;
+  bookingNo: string;
+  roomId: string;
+  roomNumber?: string;
+  guestName: string;
+  guestPhone: string;
+  guestEmail: string;
+  checkIn: string;
+  checkOut: string;
+  guestCount: number;
+  totalPrice: number;
+  specialRequests?: string;
+  status: string;
+  createdAt: string;
 }
 
 export interface AppNotification {
   id: string;
-  user_id?: string;
+  userId?: string;
   title: string;
   message: string;
   type?: 'info' | 'success' | 'warning' | 'error';
-  is_read: boolean;
-  created_at: string;
-}
-
-export interface HotelInfo {
-  id: string;
-  hotel_name: string;
-  address: string;
-  phone: string;
-  email: string;
-  google_map_embed: string;
-  google_map_link: string;
-  check_in_time: string;
-  check_out_time: string;
-  parking: string;
-  policies: string;
-  rating?: string;
-  description?: string;
-}
-
-export interface Review {
-  id: string;
-  room_id: string;
-  user_id: string;
-  user_name: string;
-  rating: number;
-  comment: string;
-  created_at: string;
+  isRead: boolean;
+  createdAt: string;
 }
 
 export interface ActivityLog {
   id: string;
-  user_id?: string;
-  user_name?: string;
+  userId?: string;
+  userName?: string;
   action: string;
   details: string;
-  created_at: string;
-}
-
-export interface SearchFilterState {
-  checkIn: string;
-  checkOut: string;
-  guests: number;
-  roomType: string;
-  minPrice: number;
-  maxPrice: number;
-  availableOnly: boolean;
+  createdAt: string;
 }

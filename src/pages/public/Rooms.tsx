@@ -1,140 +1,91 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { RoomCard } from '../../components/common/RoomCard';
-import { RoomSearchCard } from '../../components/user/RoomSearchCard';
-import { RoomCardSkeleton } from '../../components/common/SkeletonLoader';
-import { Room, SearchFilterState } from '../../types';
+import { Room } from '../../types';
 import { getRooms } from '../../services/api';
-import { useLanguage } from '../../context/LanguageContext';
+import { Building2, Filter } from 'lucide-react';
 
 export const Rooms: React.FC = () => {
-  const location = useLocation();
-  const { t } = useLanguage();
-  const [allRooms, setAllRooms] = useState<Room[]>([]);
-  const [filteredRooms, setFilteredRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sortOption, setSortOption] = useState<'price-asc' | 'price-desc' | 'capacity'>('price-asc');
-
-  const initialFilters: Partial<SearchFilterState> = location.state?.filters || {};
+  const [floorFilter, setFloorFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const data = await getRooms();
-      setAllRooms(data);
-      applyFilterLogic(data, initialFilters);
-      setLoading(false);
+      try {
+        const data = await getRooms();
+        setRooms(data);
+      } catch (err) {
+        console.error('Failed to fetch rooms:', err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchRooms();
   }, []);
 
-  const applyFilterLogic = (roomsList: Room[], filters: Partial<SearchFilterState>) => {
-    let result = [...roomsList];
-
-    if (filters.availableOnly) {
-      result = result.filter(r => r.status === 'Available');
-    }
-
-    if (filters.roomType && filters.roomType !== 'All') {
-      result = result.filter(r => r.room_type === filters.roomType);
-    }
-
-    if (filters.guests) {
-      result = result.filter(r => r.capacity >= (filters.guests || 1));
-    }
-
-    if (filters.maxPrice) {
-      result = result.filter(r => r.price <= (filters.maxPrice || 30000));
-    }
-
-    // Apply Sorting
-    if (sortOption === 'price-asc') {
-      result.sort((a, b) => a.price - b.price);
-    } else if (sortOption === 'price-desc') {
-      result.sort((a, b) => b.price - a.price);
-    } else if (sortOption === 'capacity') {
-      result.sort((a, b) => b.capacity - a.capacity);
-    }
-
-    setFilteredRooms(result);
-  };
-
-  const handleSearch = (filters: SearchFilterState) => {
-    applyFilterLogic(allRooms, filters);
-  };
-
-  const handleSortChange = (option: 'price-asc' | 'price-desc' | 'capacity') => {
-    setSortOption(option);
-    const sorted = [...filteredRooms];
-    if (option === 'price-asc') sorted.sort((a, b) => a.price - b.price);
-    if (option === 'price-desc') sorted.sort((a, b) => b.price - a.price);
-    if (option === 'capacity') sorted.sort((a, b) => b.capacity - a.capacity);
-    setFilteredRooms(sorted);
-  };
+  const filteredRooms = rooms.filter(room => {
+    if (floorFilter !== 'all' && room.floor.toString() !== floorFilter) return false;
+    if (statusFilter !== 'all' && room.status !== statusFilter) return false;
+    return true;
+  });
 
   return (
     <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-10 space-y-8">
-      
-      {/* PAGE HEADER */}
-      <div className="pb-2">
-        <h1 className="text-[32px] md:text-[40px] font-medium text-nike-ink dark:text-white">
-          {t('rooms')}
-        </h1>
-        <p className="text-[14px] text-nike-mute dark:text-nike-stone mt-1">Victory Room Hotel Accommodations</p>
-      </div>
+      {/* HEADER */}
+      <div className="border-b border-nike-hairline dark:border-nike-dark-card pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-nike-ink dark:text-white flex items-center gap-2.5">
+            <Building2 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            Apartment Units Listing (24 Units)
+          </h1>
+          <p className="text-sm text-nike-mute dark:text-nike-stone mt-1">
+            Explore 12 units on Floor 1 and 12 units on Floor 2
+          </p>
+        </div>
 
-      {/* FILTER SEARCH */}
-      <RoomSearchCard onSearch={handleSearch} initialFilters={initialFilters} />
+        {/* FILTERS */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2 text-xs font-semibold text-nike-mute dark:text-nike-stone">
+            <Filter className="w-4 h-4" /> Filters:
+          </div>
 
-      {/* RESULTS HEADER & SORTING */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-nike-soft-cloud dark:bg-nike-dark-elevated p-4 text-[14px]">
-        <span className="font-medium text-nike-ink dark:text-white">
-          {filteredRooms.length} of {allRooms.length} rooms
-        </span>
-        
-        <div className="flex items-center gap-3">
-          <span className="text-nike-mute dark:text-nike-stone font-medium">Sort By:</span>
           <select
-            value={sortOption}
-            onChange={(e) => handleSortChange(e.target.value as any)}
-            className="bg-nike-canvas dark:bg-nike-dark-card text-nike-ink dark:text-white font-medium p-2 border border-nike-hairline dark:border-nike-dark-card rounded-full px-4 text-[13px] focus:outline-none"
+            value={floorFilter}
+            onChange={(e) => setFloorFilter(e.target.value)}
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
           >
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="capacity">Guest Capacity</option>
+            <option value="all">All Floors</option>
+            <option value="1">Floor 1 (Units 101-112)</option>
+            <option value="2">Floor 2 (Units 201-212)</option>
+          </select>
+
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+          >
+            <option value="all">All Statuses</option>
+            <option value="Available">Available</option>
+            <option value="Occupied">Occupied</option>
+            <option value="Reserved">Reserved</option>
+            <option value="Maintenance">Maintenance</option>
           </select>
         </div>
       </div>
 
-      {/* ROOMS GRID — 3-up */}
+      {/* GRID */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <RoomCardSkeleton key={i} />
-          ))}
-        </div>
+        <div className="text-center py-20 text-nike-mute">Loading units...</div>
       ) : filteredRooms.length === 0 ? (
-        <div className="bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card p-12 text-center space-y-4">
-          <p className="text-[18px] font-medium text-nike-ink dark:text-white">
-            No rooms match your criteria
-          </p>
-          <p className="text-[14px] text-nike-mute dark:text-nike-stone">
-            Try adjusting your dates, guest count, or price range.
-          </p>
-          <button
-            onClick={() => applyFilterLogic(allRooms, { availableOnly: false, roomType: 'All', maxPrice: 30000 })}
-            className="bg-nike-ink dark:bg-white text-white dark:text-nike-ink text-[14px] font-medium px-6 py-3 rounded-full hover:opacity-80 transition-opacity"
-          >
-            Reset Filters
-          </button>
-        </div>
+        <div className="text-center py-20 text-nike-mute">No units match the selected filters.</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredRooms.map((room) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredRooms.map(room => (
             <RoomCard key={room.id} room={room} />
           ))}
         </div>
       )}
-
     </div>
   );
 };

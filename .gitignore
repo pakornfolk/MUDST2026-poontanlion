@@ -26,3 +26,8 @@ dist-ssr
 # Environment
 .env
 .env.production
+
+# Backend Build & DB
+backend/target/
+backend/data/
+backend/maven_tool/

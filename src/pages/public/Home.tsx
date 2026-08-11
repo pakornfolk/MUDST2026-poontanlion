@@ -1,251 +1,257 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Star, Tag } from 'lucide-react';
-import { RoomSearchCard } from '../../components/user/RoomSearchCard';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Building2, Search, SlidersHorizontal, RotateCcw, CheckCircle2 } from 'lucide-react';
 import { RoomCard } from '../../components/common/RoomCard';
-import { GoogleMapEmbed } from '../../components/common/GoogleMapEmbed';
-import { Room, SearchFilterState, Review } from '../../types';
-import { getRooms, getReviews } from '../../services/api';
-import { useLanguage } from '../../context/LanguageContext';
-import { RoomCardSkeleton } from '../../components/common/SkeletonLoader';
+import { Room } from '../../types';
+import { getRooms } from '../../services/api';
 
 export const Home: React.FC = () => {
-  const navigate = useNavigate();
-  const { t } = useLanguage();
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Filter States
+  const [searchQuery, setSearchQuery] = useState('');
+  const [floorFilter, setFloorFilter] = useState('all');
+  const [roomTypeFilter, setRoomTypeFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('Available'); // default to Available for guests
+  const [priceFilter, setPriceFilter] = useState('all');
 
   useEffect(() => {
     const fetchData = async () => {
-      const roomData = await getRooms();
-      const reviewData = await getReviews();
-      setRooms(roomData);
-      setReviews(reviewData);
-      setLoading(false);
+      try {
+        const roomData = await getRooms();
+        setRooms(roomData);
+      } catch (err) {
+        console.error('Failed to load rooms:', err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
 
-  const handleSearch = (filters: SearchFilterState) => {
-    navigate('/rooms', { state: { filters } });
+  const handleReset = () => {
+    setSearchQuery('');
+    setFloorFilter('all');
+    setRoomTypeFilter('all');
+    setStatusFilter('all');
+    setPriceFilter('all');
   };
 
-  const featuredRooms = rooms.slice(0, 4);
-  const todayAvailableRooms = rooms.filter(r => r.status === 'Available');
+  const filteredRooms = rooms.filter(room => {
+    // Search query
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase();
+      const matchNum = room.roomNumber.toLowerCase().includes(q);
+      const matchName = room.roomName.toLowerCase().includes(q);
+      const matchType = room.roomType.toLowerCase().includes(q);
+      if (!matchNum && !matchName && !matchType) return false;
+    }
+
+    // Floor filter
+    if (floorFilter !== 'all' && room.floor.toString() !== floorFilter) return false;
+
+    // Room type filter
+    if (roomTypeFilter !== 'all' && room.roomType !== roomTypeFilter) return false;
+
+    // Status filter
+    if (statusFilter !== 'all' && room.status !== statusFilter) return false;
+
+    // Price filter
+    if (priceFilter === 'under6k' && room.price >= 6000) return false;
+    if (priceFilter === '6k-7k' && (room.price < 6000 || room.price > 7000)) return false;
+    if (priceFilter === 'above7k' && room.price <= 7000) return false;
+
+    return true;
+  });
+
+  const availableCount = rooms.filter(r => r.status === 'Available').length;
+  const isFiltered = searchQuery || floorFilter !== 'all' || roomTypeFilter !== 'all' || statusFilter !== 'all' || priceFilter !== 'all';
 
   return (
-    <div className="pb-section">
-      
-      {/* ════════════════════════════════════════════════════
-          CAMPAIGN HERO — Full-bleed photography with Bebas Neue headline
-          ════════════════════════════════════════════════════ */}
-      <section className="relative bg-nike-ink overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
+    <div className="pb-16 space-y-12">
+
+      {/* HERO SECTION */}
+      <section className="relative bg-nike-ink text-white py-20 lg:py-24 overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
           <img
-            src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80"
-            alt="Hotel campaign"
+            src="/rooms/room_standard.png"
+            alt="Victory Apartment"
             className="w-full h-full object-cover"
           />
         </div>
-        
-        <div className="relative max-w-[1440px] mx-auto px-6 lg:px-10 py-20 md:py-32 lg:py-36">
+
+        <div className="relative max-w-[1440px] mx-auto px-6 lg:px-10">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[13px] font-medium">
-              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-              <span>คะแนนทำเลที่ตั้ง 8.4 · คู่รักชอบเป็นพิเศษ (สำหรับการเข้าพัก 2 คน)</span>
+            <div className="inline-flex items-center gap-2 bg-blue-600/30 border border-blue-400/30 text-blue-300 px-4 py-1.5 rounded-full text-xs font-semibold">
+              <Building2 className="w-4 h-4" /> 24 Modern Apartment Units in Bangkok
             </div>
-            
-            <h1 className="text-campaign-sm md:text-campaign-md lg:text-campaign text-white font-display tracking-tight leading-none">
-              VICTORY ROOM<br />BANGKOK
+
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+              APARTMENT MANAGEMENT<br />BANGKOK
             </h1>
-            
-            <p className="text-[15px] md:text-[17px] font-light text-white/90 max-w-2xl leading-relaxed">
-              ให้บริการห้องพักพร้อมเครื่องปรับอากาศและห้องน้ำแบบส่วนตัว ใกล้สยามดิสคัฟเวอรี่ (2.7 กม.), ศูนย์การค้ามาบุญครอง (3 กม.) และสยามพารากอน (3.1 กม.) ฟรี Wi-Fi ปลอดบุหรี่ พร้อมบริการทำความสะอาดรายวัน
+
+            <p className="text-base md:text-lg text-nike-stone leading-relaxed">
+              Premium 2-floor apartment complex with 24 units. Fully furnished rooms with balcony, air conditioning, water heater, high-speed Wi-Fi, and 24/7 security access.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-wrap gap-4 pt-2">
               <Link
                 to="/rooms"
-                className="bg-white text-nike-ink text-[14px] font-medium px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity flex items-center gap-2"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3.5 rounded-full transition-colors flex items-center gap-2"
               >
-                จองห้องพักตอนนี้ <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/about"
-                className="bg-transparent border border-white/50 hover:border-white text-white text-[14px] font-medium px-8 py-3.5 rounded-full transition-colors"
-              >
-                ดูรายละเอียดที่พัก
+                Browse All 24 Units <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════
-          SEARCH ROOM CARD — overlapping hero
-          ════════════════════════════════════════════════════ */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-10 -mt-8 relative z-20">
-        <RoomSearchCard onSearch={handleSearch} />
+      {/* REPLACED FEATURES WITH ADVANCED FILTER BAR */}
+      <section className="max-w-[1440px] mx-auto px-6 lg:px-10">
+        <div className="bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card rounded-2xl p-6 md:p-8 space-y-6 shadow-sm">
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-nike-hairline-soft dark:border-nike-dark-card pb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-blue-600/10 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center">
+                <SlidersHorizontal className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-nike-ink dark:text-white">Unit Search & Filter</h3>
+                <p className="text-xs text-nike-mute">Filter across all 24 units by floor, room type, rent price, and occupancy status</p>
+              </div>
+            </div>
+
+            {isFiltered && (
+              <button
+                onClick={handleReset}
+                className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1.5 self-start sm:self-auto"
+              >
+                <RotateCcw className="w-3.5 h-3.5" /> Reset All Filters
+              </button>
+            )}
+          </div>
+
+          {/* FILTER CONTROLS GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            
+            {/* Search Input */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Search Unit</label>
+              <div className="relative">
+                <Search className="w-4 h-4 absolute left-3 top-3 text-nike-mute" />
+                <input
+                  type="text"
+                  placeholder="Unit no. or type..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2.5 text-xs font-medium bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Floor Select */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Floor Level</label>
+              <select
+                value={floorFilter}
+                onChange={(e) => setFloorFilter(e.target.value)}
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+              >
+                <option value="all">All Floors (Floor 1 & 2)</option>
+                <option value="1">Floor 1 (Units 101–112)</option>
+                <option value="2">Floor 2 (Units 201–212)</option>
+              </select>
+            </div>
+
+            {/* Room Type Select */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Room Type</label>
+              <select
+                value={roomTypeFilter}
+                onChange={(e) => setRoomTypeFilter(e.target.value)}
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+              >
+                <option value="all">All Room Types</option>
+                <option value="Standard Studio">Standard Studio</option>
+                <option value="Deluxe Studio">Deluxe Studio</option>
+                <option value="1-Bedroom Suite">1-Bedroom Suite</option>
+                <option value="Corner Suite">Corner Suite</option>
+              </select>
+            </div>
+
+            {/* Rent Price Select */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Monthly Rent Rate</label>
+              <select
+                value={priceFilter}
+                onChange={(e) => setPriceFilter(e.target.value)}
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+              >
+                <option value="all">All Rent Rates</option>
+                <option value="under6k">Under ฿6,000 / month</option>
+                <option value="6k-7k">฿6,000 – ฿7,000 / month</option>
+                <option value="above7k">Above ฿7,000 / month</option>
+              </select>
+            </div>
+
+            {/* Availability Status Select */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Occupancy Status</label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+              >
+                <option value="all">Show All Statuses</option>
+                <option value="Available">Available for Rent</option>
+                <option value="Occupied">Currently Occupied</option>
+                <option value="Reserved">Reserved</option>
+                <option value="Maintenance">Under Maintenance</option>
+              </select>
+            </div>
+
+          </div>
+
+        </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════
-          FEATURED ROOMS — 4-up product grid
-          ════════════════════════════════════════════════════ */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-10 pt-section">
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6">
+      {/* FILTERED ROOMS LISTING */}
+      <section className="max-w-[1440px] mx-auto px-6 lg:px-10">
+        <div className="flex items-center justify-between pb-6 border-b border-nike-hairline dark:border-nike-dark-card mb-6">
           <div>
-            <h2 className="text-[24px] md:text-[32px] font-medium text-nike-ink dark:text-white">
-              {t('featuredRoomsTitle')}
+            <h2 className="text-2xl font-bold text-nike-ink dark:text-white flex items-center gap-2">
+              Apartment Units {statusFilter === 'Available' ? 'Available for Rent' : 'Catalog'}
             </h2>
+            <p className="text-xs text-nike-mute dark:text-nike-stone mt-1">
+              Showing {filteredRooms.length} of {rooms.length} total units ({availableCount} currently available)
+            </p>
           </div>
-          <Link
-            to="/rooms"
-            className="mt-3 md:mt-0 text-[14px] font-medium text-nike-ink dark:text-white underline flex items-center gap-1"
-          >
-            View All ({rooms.length})
+          <Link to="/rooms" className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+            View All Units &rarr;
           </Link>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <RoomCardSkeleton key={i} />
-            ))}
+          <div className="text-center py-16 text-nike-mute">Loading units...</div>
+        ) : filteredRooms.length === 0 ? (
+          <div className="text-center py-16 bg-nike-canvas dark:bg-nike-dark-elevated rounded-2xl border border-nike-hairline dark:border-nike-dark-card space-y-3">
+            <CheckCircle2 className="w-10 h-10 text-nike-mute mx-auto opacity-50" />
+            <p className="text-sm font-semibold text-nike-ink dark:text-white">No apartment units match your filter criteria.</p>
+            <button
+              onClick={handleReset}
+              className="text-xs text-blue-600 font-semibold hover:underline"
+            >
+              Reset filters to see all available units
+            </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {featuredRooms.map(room => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredRooms.map(room => (
               <RoomCard key={room.id} room={room} />
             ))}
           </div>
         )}
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          PROMOTIONS — Clean flat cards with pill badges
-          ════════════════════════════════════════════════════ */}
-      <section className="bg-nike-soft-cloud dark:bg-nike-dark-elevated py-section mt-section">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-          <div className="mb-8">
-            <h2 className="text-[24px] md:text-[32px] font-medium text-nike-ink dark:text-white">
-              {t('promotionsTitle')}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            <div className="bg-nike-canvas dark:bg-nike-dark-card p-6 space-y-4 relative">
-              <div className="absolute top-4 right-4">
-                <span className="bg-nike-ink text-white text-[12px] font-medium px-3 py-1 rounded-full">
-                  10% OFF
-                </span>
-              </div>
-              <Tag className="w-5 h-5 text-nike-ink dark:text-white" />
-              <h3 className="text-[16px] font-medium text-nike-ink dark:text-white">Early Bird Escape</h3>
-              <p className="text-[14px] text-nike-mute dark:text-nike-stone leading-relaxed">
-                Book 14 days in advance and receive 10% discount on all Deluxe and Executive Suites.
-              </p>
-              <div className="pt-1 text-[13px] text-nike-ink dark:text-white">
-                Code: <span className="bg-nike-soft-cloud dark:bg-nike-dark-elevated px-3 py-1 font-medium">VICTORY10</span>
-              </div>
-            </div>
-
-            <div className="bg-nike-canvas dark:bg-nike-dark-card p-6 space-y-4 relative">
-              <div className="absolute top-4 right-4">
-                <span className="bg-nike-ink text-white text-[12px] font-medium px-3 py-1 rounded-full">
-                  20% OFF
-                </span>
-              </div>
-              <Tag className="w-5 h-5 text-nike-ink dark:text-white" />
-              <h3 className="text-[16px] font-medium text-nike-ink dark:text-white">Luxury Staycation</h3>
-              <p className="text-[14px] text-nike-mute dark:text-nike-stone leading-relaxed">
-                Stay 3 nights or more in Presidential Penthouse or Pool Villa to unlock 20% discount.
-              </p>
-              <div className="pt-1 text-[13px] text-nike-ink dark:text-white">
-                Code: <span className="bg-nike-soft-cloud dark:bg-nike-dark-elevated px-3 py-1 font-medium">LUXURY20</span>
-              </div>
-            </div>
-
-            <div className="bg-nike-canvas dark:bg-nike-dark-card p-6 space-y-4 relative">
-              <div className="absolute top-4 right-4">
-                <span className="bg-nike-success text-white text-[12px] font-medium px-3 py-1 rounded-full">
-                  ฿500 OFF
-                </span>
-              </div>
-              <Tag className="w-5 h-5 text-nike-ink dark:text-white" />
-              <h3 className="text-[16px] font-medium text-nike-ink dark:text-white">Welcome Gift</h3>
-              <p className="text-[14px] text-nike-mute dark:text-nike-stone leading-relaxed">
-                New guests receive instant 500 THB deduction upon booking confirmation.
-              </p>
-              <div className="pt-1 text-[13px] text-nike-ink dark:text-white">
-                Code: <span className="bg-nike-soft-cloud dark:bg-nike-dark-elevated px-3 py-1 font-medium">WELCOME500</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          TODAY AVAILABLE ROOMS
-          ════════════════════════════════════════════════════ */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-10 pt-section">
-        <div className="pb-6">
-          <h2 className="text-[24px] md:text-[32px] font-medium text-nike-ink dark:text-white">
-            {t('availableToday')}
-          </h2>
-          <p className="text-[14px] text-nike-mute dark:text-nike-stone mt-1">
-            {todayAvailableRooms.length} rooms available for instant booking
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {todayAvailableRooms.map(room => (
-            <RoomCard key={room.id} room={room} />
-          ))}
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          GUEST REVIEWS
-          ════════════════════════════════════════════════════ */}
-      <section className="bg-nike-soft-cloud dark:bg-nike-dark-elevated py-section mt-section">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-          <div className="pb-6">
-            <h2 className="text-[24px] md:text-[32px] font-medium text-nike-ink dark:text-white">
-              {t('customerReviews')}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {reviews.map(rev => (
-              <div key={rev.id} className="bg-nike-canvas dark:bg-nike-dark-card p-6 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-[15px] text-nike-ink dark:text-white">{rev.user_name}</span>
-                  <div className="flex text-amber-400">
-                    {Array.from({ length: rev.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-[14px] text-nike-mute dark:text-nike-stone italic leading-relaxed">
-                  "{rev.comment}"
-                </p>
-                <span className="text-[12px] text-nike-stone block">
-                  {new Date(rev.created_at).toLocaleDateString()}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════
-          GOOGLE MAP
-          ════════════════════════════════════════════════════ */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-10 pt-section">
-        <GoogleMapEmbed />
       </section>
 
     </div>

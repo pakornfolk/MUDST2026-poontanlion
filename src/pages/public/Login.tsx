@@ -1,115 +1,90 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Lock, Mail, ArrowRight, User as UserIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useLanguage } from '../../context/LanguageContext';
+import { Lock, Mail, LogIn } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { t } = useLanguage();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const result = await login(email, password);
+    const res = await login(email, password);
     setLoading(false);
 
-    if (result.success) {
-      const cleanInput = email.toLowerCase().trim();
-      if (cleanInput.includes('admin') || cleanInput === 'admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/user/dashboard');
-      }
+    if (res.success) {
+      navigate('/admin/dashboard');
     }
   };
 
   return (
-    <div className="max-w-md mx-auto px-6 py-16 space-y-8">
-      
-      <div className="text-center space-y-3">
-        <div className="w-10 h-10 bg-nike-ink dark:bg-white text-white dark:text-nike-ink flex items-center justify-center mx-auto">
-          <span className="font-display text-2xl leading-none">V</span>
-        </div>
-        <h1 className="text-[24px] font-medium text-nike-ink dark:text-white">
-          Sign In
-        </h1>
-        <p className="text-[14px] text-nike-mute dark:text-nike-stone">
-          Enter your username / email and password
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card p-6 space-y-5">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md bg-nike-canvas dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card p-8 rounded-3xl space-y-6 shadow-sm">
         
-        <div>
-          <label className="block font-medium text-[14px] mb-1.5 text-nike-ink dark:text-white">Email / Username</label>
-          <div className="relative">
-            <UserIcon className="w-4 h-4 text-nike-mute absolute left-3.5 top-3.5" />
-            <input
-              type="text"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="admin or name@example.com"
-              className="w-full pl-10 p-3 bg-nike-soft-cloud dark:bg-nike-dark-card border-0 text-nike-ink dark:text-white text-[14px] rounded-[24px] focus:outline-none focus:ring-2 focus:ring-nike-ink"
-            />
+        <div className="text-center space-y-2">
+          <div className="flex items-center gap-3 justify-center mb-2">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm tracking-wider">
+              AM
+            </div>
+            <h2 className="text-2xl font-bold text-nike-ink dark:text-white">
+              Apartment Management
+            </h2>
           </div>
+          <p className="text-xs text-nike-stone">Apartment Management System</p>
         </div>
 
-        <div>
-          <label className="block font-medium text-[14px] mb-1.5 text-nike-ink dark:text-white">Password</label>
-          <div className="relative">
-            <Lock className="w-4 h-4 text-nike-mute absolute left-3.5 top-3.5" />
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full pl-10 p-3 bg-nike-soft-cloud dark:bg-nike-dark-card border-0 text-nike-ink dark:text-white text-[14px] rounded-[24px] focus:outline-none focus:ring-2 focus:ring-nike-ink"
-            />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Username / Email</label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <input
+                type="text"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center justify-between text-[13px]">
-          <label className="flex items-center gap-2 cursor-pointer text-nike-mute dark:text-nike-stone">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={e => setRememberMe(e.target.checked)}
-              className="accent-nike-ink w-4 h-4"
-            />
-            <span>Remember Me</span>
-          </label>
-          <Link to="/forgot-password" className="text-nike-ink dark:text-white underline font-medium">
-            Forgot Password?
-          </Link>
-        </div>
+          <div>
+            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Password</label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="password"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+              />
+            </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-nike-ink dark:bg-white text-white dark:text-nike-ink text-[14px] font-medium py-4 rounded-full hover:opacity-80 transition-opacity flex items-center justify-center gap-2"
-        >
-          {loading ? 'Authenticating...' : 'Sign In'} <ArrowRight className="w-4 h-4" />
-        </button>
+          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-[11px] text-blue-600 dark:text-blue-400">
+            <strong>Default Credentials:</strong><br />
+            Username: <code className="bg-blue-500/20 px-1 rounded">admin</code> | Password: <code className="bg-blue-500/20 px-1 rounded">admin</code>
+          </div>
 
-        <div className="text-center pt-3 border-t border-nike-hairline-soft dark:border-nike-dark-card text-[14px]">
-          <span className="text-nike-mute">Don't have an account? </span>
-          <Link to="/register" className="text-nike-ink dark:text-white font-medium underline">
-            Join Us
-          </Link>
-        </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-colors shadow-xs flex items-center justify-center gap-2 text-xs"
+          >
+            <LogIn className="w-4 h-4" />
+            {loading ? 'Authenticating...' : 'Sign In to Admin Panel'}
+          </button>
+        </form>
 
-      </form>
-
+      </div>
     </div>
   );
 };

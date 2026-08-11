@@ -2,77 +2,58 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { Booking } from '../types';
-import { formatCurrency, formatDate } from './formatters';
+import { formatCurrency } from './formatters';
 
-export const exportBookingsToPDF = (bookings: Booking[], title = 'Victory Room - Booking Report') => {
+export const exportBookingsToPDF = (bookings: Booking[]) => {
   const doc = new jsPDF();
 
-  // Hotel Header
   doc.setFontSize(18);
-  doc.setTextColor(28, 105, 212); // BMW Blue #1c69d4
-  doc.text('VICTORY ROOM', 14, 20);
+  doc.text('Apartment Booking Requests Report', 14, 22);
 
   doc.setFontSize(10);
-  doc.setTextColor(60, 60, 60);
-  doc.text('Luxury Hotel & Room Booking Management System', 14, 26);
-  doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 31);
+  doc.setTextColor(100);
+  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
 
-  doc.setFontSize(14);
-  doc.setTextColor(26, 33, 41);
-  doc.text(title, 14, 42);
-
-  const tableRows = bookings.map(b => [
-    b.booking_no,
-    b.guest_name,
-    b.room?.room_name || 'Suite',
-    formatDate(b.check_in),
-    formatDate(b.check_out),
-    formatCurrency(b.total_price),
-    b.status
+  const tableData = bookings.map((booking) => [
+    booking.bookingNo,
+    booking.guestName,
+    `Unit ${booking.roomNumber || '-'}`,
+    booking.checkIn,
+    booking.checkOut,
+    formatCurrency(booking.totalPrice),
+    booking.status,
   ]);
 
   autoTable(doc, {
-    startY: 48,
-    head: [['Booking No', 'Guest Name', 'Room', 'Check In', 'Check Out', 'Total', 'Status']],
-    body: tableRows,
-    headStyles: {
-      fillColor: [28, 105, 212],
-      textColor: [255, 255, 255],
-      fontStyle: 'bold',
-    },
-    alternateRowStyles: {
-      fillColor: [247, 247, 247],
-    },
-    styles: {
-      fontSize: 9,
-      cellPadding: 3,
-    }
+    head: [['Booking No', 'Applicant Name', 'Unit', 'Check In', 'Check Out', 'Total Rent', 'Status']],
+    body: tableData,
+    startY: 35,
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [37, 99, 235] },
   });
 
-  doc.save(`Victory_Room_Bookings_${Date.now()}.pdf`);
+  doc.save(`apartment_bookings_${Date.now()}.pdf`);
 };
 
-export const exportBookingsToExcel = (bookings: Booking[], fileName = 'Victory_Room_Bookings') => {
-  const data = bookings.map(b => ({
-    'Booking No': b.booking_no,
-    'Guest Name': b.guest_name,
-    'Guest Phone': b.guest_phone,
-    'Guest Email': b.guest_email,
-    'Room Name': b.room?.room_name || '',
-    'Room Number': b.room?.room_number || '',
-    'Check In': b.check_in,
-    'Check Out': b.check_out,
-    'Guests': b.guest_count,
-    'Total Price (THB)': b.total_price,
-    'Promo Code': b.promo_code || 'None',
-    'Discount (THB)': b.discount_amount || 0,
-    'Status': b.status,
-    'Created Date': formatDate(b.created_at),
+export const exportBookingsToExcel = (bookings: Booking[]) => {
+  const excelData = bookings.map((booking) => ({
+    'Booking No': booking.bookingNo,
+    'Applicant Name': booking.guestName,
+    'Phone': booking.guestPhone,
+    'Email': booking.guestEmail,
+    'Unit Number': booking.roomNumber || '-',
+    'Move In Date': booking.checkIn,
+    'Move Out Date': booking.checkOut,
+    'Guest Count': booking.guestCount,
+    'Monthly Rent': booking.totalPrice,
+    'Special Requests': booking.specialRequests || '-',
+    'Status': booking.status,
+    'Submitted At': booking.createdAt,
   }));
 
-  const worksheet = XLSX.utils.json_to_sheet(data);
+  const worksheet = XLSX.utils.json_to_sheet(excelData);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Bookings');
 
-  XLSX.writeFile(workbook, `${fileName}_${Date.now()}.xlsx`);
+  XLSX.writeFile(workbook, `apartment_bookings_${Date.now()}.xlsx`);
 };
