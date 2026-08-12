@@ -6,17 +6,20 @@ import { formatCurrency } from '../../utils/formatters';
 import { Building2, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useAuth } from '../../context/AuthContext';
+
 export const BookingPage: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [room, setRoom] = useState<Room | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
-    guestName: '',
+    guestName: user?.fullname || '',
     guestPhone: '',
-    guestEmail: '',
+    guestEmail: user?.email || '',
     checkIn: new Date().toISOString().split('T')[0],
     checkOut: new Date(Date.now() + 365 * 86400000).toISOString().split('T')[0], // 1 year lease by default
     guestCount: 1,
@@ -24,13 +27,19 @@ export const BookingPage: React.FC = () => {
   });
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error('Please log in to submit a room booking request');
+      navigate('/login');
+      return;
+    }
+
     if (roomId) {
       getRoomById(roomId).then(res => {
         setRoom(res);
         setLoading(false);
       });
     }
-  }, [roomId]);
+  }, [roomId, isAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

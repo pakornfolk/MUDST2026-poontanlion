@@ -78,25 +78,34 @@ export const Navbar: React.FC = () => {
 
           {/* RIGHT CONTROLS */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              to="/rooms"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-nike-soft-cloud dark:bg-nike-dark-elevated text-nike-ink dark:text-white hover:bg-nike-hairline-soft transition-colors"
-              title="Search Units"
-            >
-              <Search className="w-[18px] h-[18px]" />
-            </Link>
+            {location.pathname !== '/login' && location.pathname !== '/register' && (
+              <Link
+                to="/rooms"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-nike-soft-cloud dark:bg-nike-dark-elevated text-nike-ink dark:text-white hover:bg-nike-hairline-soft transition-colors"
+                title="Search Units"
+              >
+                <Search className="w-[18px] h-[18px]" />
+              </Link>
+            )}
 
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
-                <Link
-                  to="/admin/dashboard"
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors flex items-center gap-1.5"
-                >
-                  <Shield className="w-4 h-4" /> Admin Dashboard
-                </Link>
+                {user?.role === 'admin' ? (
+                  <Link
+                    to="/admin/dashboard"
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors flex items-center gap-1.5 shadow-xs"
+                  >
+                    <Shield className="w-4 h-4" /> Admin Panel
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-2 bg-nike-soft-cloud dark:bg-nike-dark-elevated px-3 py-1.5 rounded-full border border-nike-hairline dark:border-nike-dark-card text-xs font-semibold text-nike-ink dark:text-white">
+                    <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span>{user?.fullname || 'Customer'}</span>
+                  </div>
+                )}
                 <button
                   onClick={() => { logout(); navigate('/login'); }}
-                  className="text-nike-mute hover:text-nike-sale p-2 rounded-full transition-colors"
+                  className="text-nike-mute hover:text-rose-600 p-2 rounded-full transition-colors"
                   title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -141,13 +150,25 @@ export const Navbar: React.FC = () => {
             ))}
             <div className="pt-4 border-t border-nike-hairline-soft">
               {isAuthenticated ? (
-                <Link
-                  to="/admin/dashboard"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-center bg-blue-600 text-white py-2.5 font-semibold text-[14px] rounded-full"
-                >
-                  Admin Dashboard
-                </Link>
+                user?.role === 'admin' ? (
+                  <Link
+                    to="/admin/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-center bg-blue-600 text-white py-2.5 font-semibold text-[14px] rounded-full"
+                  >
+                    Admin Panel
+                  </Link>
+                ) : (
+                  <div className="flex items-center justify-between bg-nike-soft-cloud dark:bg-nike-dark-elevated p-3 rounded-xl">
+                    <span className="text-xs font-semibold text-nike-ink dark:text-white">Hi, {user?.fullname}</span>
+                    <button
+                      onClick={() => { logout(); setMobileMenuOpen(false); navigate('/login'); }}
+                      className="text-xs text-rose-600 font-semibold"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )
               ) : (
                 <Link
                   to="/login"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Room, MaintenanceLog } from '../../types';
-import { formatCurrency } from '../../utils/formatters';
+import { formatCurrency, formatSuppliesSummary } from '../../utils/formatters';
 import { UserCheck, Wrench, Home, X } from 'lucide-react';
 import { getMaintenanceLogs } from '../../services/api';
 
@@ -251,7 +251,7 @@ export const ApartmentFloorGrid: React.FC<ApartmentFloorGridProps> = ({ rooms, o
                       </div>
                       <p className="text-nike-mute dark:text-nike-stone">{log.description}</p>
                       <div className="flex justify-between text-[11px] pt-1 text-nike-stone">
-                        <span>Supplies: {log.suppliesSummary}</span>
+                        <span>Supplies: {formatSuppliesSummary(log.suppliesSummary)}</span>
                         <span className="font-semibold text-nike-ink dark:text-white">Total: {formatCurrency(log.totalCost)}</span>
                       </div>
                     </div>

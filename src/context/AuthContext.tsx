@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, UserRole } from '../types';
-import { loginAdmin } from '../services/api';
+import { loginAdmin, registerApiUser } from '../services/api';
 import { toast } from 'sonner';
 
 interface AuthContextType {
   user: User | null;
   role: UserRole;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string; role?: string }>;
+  register: (fullname: string, email: string, password: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -22,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return null;
   });
 
-  const role: UserRole = user?.role || 'admin';
+  const role: UserRole = user?.role || 'customer';
 
   useEffect(() => {
     if (user) {
@@ -32,22 +33,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user]);
 
-  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string; role?: string }> => {
     const result = await loginAdmin(email.trim().toLowerCase(), password.trim());
 
     if (result.success && result.user) {
-      const adminUser: User = {
+      const authUser: User = {
         id: result.user.id,
         fullname: result.user.fullname,
         email: result.user.email,
-        role: 'admin',
+        role: result.user.role || 'customer',
       };
-      setUser(adminUser);
-      toast.success(`Welcome back, ${adminUser.fullname}`);
+      setUser(authUser);
+      toast.success(`Welcome back, ${authUser.fullname}`);
+      return { success: true, role: authUser.role };
+    }
+
+    const err = result.error || 'Invalid email or password.';
+    toast.error(err);
+    return { success: false, error: err };
+  };
+
+  const register = async (fullname: string, email: string, password: string, phone?: string): Promise<{ success: boolean; error?: string }> => {
+    const result = await registerApiUser(fullname, email, password, phone);
+
+    if (result.success && result.user) {
+      const authUser: User = {
+        id: result.user.id,
+        fullname: result.user.fullname,
+        email: result.user.email,
+        phone,
+        role: 'customer',
+      };
+      setUser(authUser);
+      toast.success(`Account created! Welcome to Victory Apartment, ${fullname}`);
       return { success: true };
     }
 
-    const err = result.error || 'Invalid credentials. Use admin/admin to login.';
+    const err = result.error || 'Registration failed.';
     toast.error(err);
     return { success: false, error: err };
   };
@@ -63,6 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       role,
       isAuthenticated: Boolean(user),
       login,
+      register,
       logout,
     }}>
       {children}

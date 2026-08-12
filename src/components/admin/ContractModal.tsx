@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Lease } from '../../types';
 import { formatCurrency, formatDate } from '../../utils/formatters';
-import { Printer, X, FileCheck } from 'lucide-react';
+import { Printer, X, FileCheck, Download } from 'lucide-react';
 
 interface ContractModalProps {
   lease: Lease;
@@ -9,15 +9,26 @@ interface ContractModalProps {
 }
 
 export const ContractModal: React.FC<ContractModalProps> = ({ lease, onClose }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
+    >
       <div className="bg-white text-gray-900 border border-gray-200 rounded-2xl max-w-3xl w-full p-8 shadow-2xl space-y-6 my-8 print:shadow-none print:border-none print:p-0 print:m-0 print:max-w-none print:w-full print:rounded-none">
 
-        {/* ACTION HEADER */}
+        {/* TOP ACTION HEADER */}
         <div className="flex items-center justify-between border-b border-gray-200 pb-4 print:hidden">
           <div className="flex items-center gap-2">
             <FileCheck className="w-6 h-6 text-blue-600" />
@@ -29,12 +40,14 @@ export const ContractModal: React.FC<ContractModalProps> = ({ lease, onClose }) 
             <button
               onClick={handlePrint}
               className="px-4 py-2 text-xs font-semibold rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-1.5 shadow-sm"
+              title="Print or Save as PDF"
             >
-              <Printer className="w-4 h-4" /> Print / Download PDF
+              <Printer className="w-4 h-4" /> Print / Save PDF
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-900"
+              className="p-2 rounded-full hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-colors border border-gray-200"
+              title="Close (ESC)"
             >
               <X className="w-5 h-5" />
             </button>
@@ -136,6 +149,22 @@ export const ContractModal: React.FC<ContractModalProps> = ({ lease, onClose }) 
             </div>
           </div>
 
+        </div>
+
+        {/* BOTTOM ACTION BAR */}
+        <div className="flex justify-between items-center pt-4 border-t border-gray-200 print:hidden">
+          <button
+            onClick={onClose}
+            className="px-5 py-2.5 text-xs font-semibold rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors flex items-center gap-1.5"
+          >
+            <X className="w-4 h-4" /> Close Contract
+          </button>
+          <button
+            onClick={handlePrint}
+            className="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-1.5 shadow-md"
+          >
+            <Download className="w-4 h-4" /> Download / Print Contract PDF
+          </button>
         </div>
 
       </div>

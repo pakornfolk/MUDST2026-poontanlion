@@ -6,7 +6,7 @@ import {
   getMaintenanceLogs,
   getReminders, saveReminder, toggleReminder, getRooms
 } from '../../services/api';
-import { formatCurrency, formatDate } from '../../utils/formatters';
+import { formatCurrency, formatDate, formatSuppliesSummary } from '../../utils/formatters';
 import { Wrench, Plus, Package, History, BellRing, CheckCircle2, Clock, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -292,7 +292,7 @@ export const MaintenanceManagement: React.FC = () => {
                       <span className="text-[11px] text-nike-stone">{log.taskNo}</span>
                     </td>
                     <td className="p-3 text-nike-mute dark:text-nike-stone">{log.description}</td>
-                    <td className="p-3 text-nike-mute dark:text-nike-stone">{log.suppliesSummary || 'None'}</td>
+                    <td className="p-3 text-nike-mute dark:text-nike-stone">{formatSuppliesSummary(log.suppliesSummary)}</td>
                     <td className="p-3 font-medium text-nike-ink dark:text-white">{log.performedBy}</td>
                     <td className="p-3 text-right font-bold text-nike-ink dark:text-white">{formatCurrency(log.totalCost)}</td>
                   </tr>

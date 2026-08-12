@@ -3,7 +3,7 @@ import {
   MaintenanceLog, ScheduledReminder, AppNotification, ActivityLog, Booking
 } from '../types';
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = '/api';
 
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -279,5 +279,16 @@ export const loginAdmin = async (email: string, password: string): Promise<{ suc
     });
   } catch (err: any) {
     return { success: false, error: err.message || 'Login failed' };
+  }
+};
+
+export const registerApiUser = async (fullname: string, email: string, password: string, phone?: string): Promise<{ success: boolean; user?: any; error?: string }> => {
+  try {
+    return await fetchJson(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      body: JSON.stringify({ fullname, email, password, phone }),
+    });
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Registration failed' };
   }
 };

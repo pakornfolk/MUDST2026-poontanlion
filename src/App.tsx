@@ -17,6 +17,7 @@ import { Rooms } from './pages/public/Rooms';
 import { RoomDetail } from './pages/public/RoomDetail';
 import { BookingPage } from './pages/public/BookingPage';
 import { Login } from './pages/public/Login';
+import { Register } from './pages/public/Register';
 import { PaymentPage } from './pages/public/PaymentPage';
 
 // Admin Pages
@@ -29,11 +30,15 @@ import { BookingManagement } from './pages/admin/BookingManagement';
 import { ActivityLogList } from './pages/admin/ActivityLogList';
 import { NotificationCenter } from './pages/admin/NotificationCenter';
 
-// Protected Route Guard
+// Protected Route Guard (Strict Admin Check)
 const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+  if (user?.role !== 'admin') {
+    toast.error('Access Denied. Admin privileges required.');
+    return <Navigate to="/" replace />;
   }
   return <>{children}</>;
 };
@@ -76,6 +81,7 @@ export const AppContent: React.FC = () => {
         <Route path="/booking/:roomId" element={<PublicLayout><BookingPage /></PublicLayout>} />
         <Route path="/payment/:bookingId" element={<PublicLayout><PaymentPage /></PublicLayout>} />
         <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+        <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
 
         {/* ADMIN PROTECTED ROUTES */}
         <Route path="/admin/dashboard" element={<ProtectedAdminRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedAdminRoute>} />

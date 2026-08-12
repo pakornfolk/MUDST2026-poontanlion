@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Lock, Mail, LogIn } from 'lucide-react';
 
@@ -18,7 +18,11 @@ export const Login: React.FC = () => {
     setLoading(false);
 
     if (res.success) {
-      navigate('/admin/dashboard');
+      if (res.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/rooms');
+      }
     }
   };
 
@@ -40,7 +44,7 @@ export const Login: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Username / Email</label>
+            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Email</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
               <input
@@ -48,7 +52,7 @@ export const Login: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="email"
+                placeholder="Enter your email address"
                 className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
               />
             </div>
@@ -63,15 +67,10 @@ export const Login: React.FC = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="password"
+                placeholder="Enter password"
                 className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
               />
             </div>
-          </div>
-
-          <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-[11px] text-blue-600 dark:text-blue-400">
-            <strong>Default Credentials:</strong><br />
-            Username: <code className="bg-blue-500/20 px-1 rounded">admin</code> | Password: <code className="bg-blue-500/20 px-1 rounded">admin</code>
           </div>
 
           <button
@@ -80,9 +79,18 @@ export const Login: React.FC = () => {
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-colors shadow-xs flex items-center justify-center gap-2 text-xs"
           >
             <LogIn className="w-4 h-4" />
-            {loading ? 'Authenticating...' : 'Sign In to Admin Panel'}
+            {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
+
+        <div className="text-center pt-2 border-t border-nike-hairline dark:border-nike-dark-card">
+          <p className="text-xs text-nike-stone">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
 
       </div>
     </div>

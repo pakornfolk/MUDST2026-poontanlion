@@ -22,13 +22,15 @@ public class DataSeeder {
     private final ScheduledReminderRepository reminderRepo;
     private final AppNotificationRepository notifRepo;
     private final ActivityLogRepository activityRepo;
+    private final AppUserRepository userRepo;
 
     public DataSeeder(
             RoomRepository roomRepo, TenantRepository tenantRepo,
             LeaseRepository leaseRepo, UtilityBillRepository billRepo,
             MaintenanceTaskRepository taskRepo, SupplyItemRepository supplyRepo,
             MaintenanceLogRepository logRepo, ScheduledReminderRepository reminderRepo,
-            AppNotificationRepository notifRepo, ActivityLogRepository activityRepo) {
+            AppNotificationRepository notifRepo, ActivityLogRepository activityRepo,
+            AppUserRepository userRepo) {
         this.roomRepo = roomRepo;
         this.tenantRepo = tenantRepo;
         this.leaseRepo = leaseRepo;
@@ -39,10 +41,13 @@ public class DataSeeder {
         this.reminderRepo = reminderRepo;
         this.notifRepo = notifRepo;
         this.activityRepo = activityRepo;
+        this.userRepo = userRepo;
     }
 
     @PostConstruct
     public void seed() {
+        seedUsers();
+
         // Only seed if DB is empty (first run)
         if (roomRepo.count() > 0) return;
 
@@ -56,6 +61,15 @@ public class DataSeeder {
         seedReminders();
         seedNotifications();
         seedActivityLog();
+    }
+
+    private void seedUsers() {
+        if (!userRepo.existsByEmail("admin@victoryapartment.com")) {
+            userRepo.save(new AppUser("usr-admin-01", "admin@victoryapartment.com", "admin", "Victory Admin", "081-234-5678", "admin"));
+        }
+        if (!userRepo.existsByEmail("admin")) {
+            userRepo.save(new AppUser("usr-admin-02", "admin", "admin", "Victory Admin", "081-234-5678", "admin"));
+        }
     }
 
     private void seedRooms() {
