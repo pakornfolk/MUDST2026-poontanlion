@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Building2, CheckCircle2, Wrench,
-  DollarSign, BellRing, FileText, PlusCircle
+  DollarSign, BellRing, FileText, PlusCircle, RotateCw
 } from 'lucide-react';
 import { Room, Lease, UtilityBill, MaintenanceTask, ScheduledReminder } from '../../types';
 import {
@@ -11,6 +11,7 @@ import {
 import { formatCurrency } from '../../utils/formatters';
 import { ApartmentFloorGrid } from '../../components/admin/ApartmentFloorGrid';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export const AdminDashboard: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -18,6 +19,7 @@ export const AdminDashboard: React.FC = () => {
   const [bills, setBills] = useState<UtilityBill[]>([]);
   const [tasks, setTasks] = useState<MaintenanceTask[]>([]);
   const [reminders, setReminders] = useState<ScheduledReminder[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchDashboardData = async () => {
     try {
@@ -29,6 +31,13 @@ export const AdminDashboard: React.FC = () => {
     } catch (err) {
       console.error('Failed to fetch dashboard data:', err);
     }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchDashboardData();
+    setRefreshing(false);
+    toast.success('Dashboard data refreshed!');
   };
 
   useEffect(() => {
@@ -54,18 +63,27 @@ export const AdminDashboard: React.FC = () => {
     <div className="space-y-8 pb-10">
 
       {/* HEADER */}
-      <div className="border-b border-nike-hairline dark:border-nike-dark-card pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="border-b border-slate-200 dark:border-slate-700 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-[28px] font-bold text-nike-ink dark:text-white flex items-center gap-2.5">
             <Building2 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             Apartment Admin Dashboard
           </h1>
-          <p className="text-[14px] text-nike-mute dark:text-nike-stone mt-0.5">
+          <p className="text-[14px] text-slate-500 dark:text-slate-300 mt-0.5">
             Manage 24 apartment units across 2 floors — tenants, leases, billing & maintenance
           </p>
         </div>
 
         <div className="flex flex-wrap gap-2">
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white transition-all flex items-center gap-1.5 active:scale-95 shadow-2xs cursor-pointer"
+            title="Refresh Live Data"
+          >
+            <RotateCw className={`w-4 h-4 text-blue-600 dark:text-blue-400 ${refreshing ? 'animate-spin' : ''}`} />
+            <span>{refreshing ? 'Refreshing...' : 'Refresh Data'}</span>
+          </button>
           <Link
             to="/admin/tenants"
             className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all flex items-center gap-1.5 shadow-xs"
@@ -74,13 +92,13 @@ export const AdminDashboard: React.FC = () => {
           </Link>
           <Link
             to="/admin/utility-bills"
-            className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card hover:bg-nike-hairline text-nike-ink dark:text-white transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white transition-all flex items-center gap-1.5"
           >
             <FileText className="w-4 h-4" /> Generate Invoice / Receipt
           </Link>
           <Link
             to="/admin/maintenance"
-            className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card hover:bg-nike-hairline text-nike-ink dark:text-white transition-all flex items-center gap-1.5"
+            className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white transition-all flex items-center gap-1.5"
           >
             <Wrench className="w-4 h-4" /> Maintenance / Supplies
           </Link>

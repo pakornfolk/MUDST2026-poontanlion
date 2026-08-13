@@ -4,12 +4,16 @@
 
 @layer base {
   body {
-    @apply bg-nike-canvas text-nike-ink dark:bg-nike-dark-surface dark:text-white font-sans antialiased;
+    @apply bg-slate-50 text-slate-900 dark:bg-nike-dark-surface dark:text-white font-sans antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200;
   }
 
-  /* Nike uses 0 letter-spacing on Futura/Inter — reset any browser defaults */
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
+    @apply text-slate-900 dark:text-white font-bold;
+  }
+
+  input, select, textarea {
+    @apply text-slate-900 placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-400;
   }
 }
 
@@ -68,4 +72,82 @@
   .nike-focus {
     @apply focus:outline-none focus:ring-2 focus:ring-nike-ink focus:ring-offset-2 focus:ring-offset-nike-soft-cloud;
   }
+}
+
+/* ==========================================================================
+   A4 PRINT & PDF EXPORT STYLES (Strict A4 Portrait Layout Alignment)
+   ========================================================================== */
+@page {
+  size: A4 portrait;
+  margin: 12mm 15mm 12mm 15mm;
+}
+
+@media print {
+  /* Force ALL containers, body, root, main, and wrappers to pure white bg and black text */
+  html, body, #root, main, div, section, article, table, tr, td, th {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide header, navbar, sidebar, buttons, controls, search inputs & icons */
+  aside, header, nav, footer, button, input, select, textarea, svg:not(.document-paper svg), .print\:hidden {
+    display: none !important;
+  }
+
+  /* Reset layout to full A4 page width */
+  .fixed {
+    position: static !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .document-paper, .print\:max-w-none {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Ensure ALL text, titles, headings, numbers, and labels are crisp black */
+  h1, h2, h3, h4, h5, h6, p, span, div, td, th, strong, b, a, label {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+
+  /* Keep table borders neat in light grey */
+  table, th, td, tr, div {
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Prevent page breaks inside document sections */
+  tr, table, blockquote, .print-keep-together {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+/* Document paper card forced to pure white background and crisp dark text in all themes */
+.document-paper {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.document-paper h1,
+.document-paper h2,
+.document-paper h3,
+.document-paper h4,
+.document-paper p,
+.document-paper span,
+.document-paper td,
+.document-paper th,
+.document-paper label {
+  color: #0f172a !important;
 }

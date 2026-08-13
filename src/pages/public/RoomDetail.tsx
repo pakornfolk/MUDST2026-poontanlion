@@ -105,40 +105,40 @@ export const RoomDetail: React.FC = () => {
             </div>
 
             <h1 className="text-3xl md:text-4xl font-bold text-nike-ink dark:text-white">{room.roomName}</h1>
-            <p className="text-sm text-nike-mute dark:text-nike-stone leading-relaxed">
+            <p className="text-sm font-medium text-slate-800 dark:text-slate-100 leading-relaxed bg-slate-100 dark:bg-slate-800/90 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs">
               {room.description}
             </p>
           </div>
 
           {/* KEY SPECS GRID (Bed Type, Capacity, Size) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card rounded-2xl">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-sm">
             <div className="flex items-center gap-3 p-2">
               <div className="w-10 h-10 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center shrink-0">
                 <Maximize2 className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-semibold text-nike-mute block uppercase tracking-wider">Room Size</span>
-                <span className="font-bold text-sm text-nike-ink dark:text-white">{room.sizeSqm} m²</span>
+                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block uppercase tracking-wider">Room Size</span>
+                <span className="font-extrabold text-base text-slate-900 dark:text-white">{room.sizeSqm} m²</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-2 border-t sm:border-t-0 sm:border-l border-nike-hairline-soft dark:border-nike-dark-card pt-3 sm:pt-0 sm:pl-4">
+            <div className="flex items-center gap-3 p-2 border-t sm:border-t-0 sm:border-l border-slate-300 dark:border-slate-700 pt-3 sm:pt-0 sm:pl-4">
               <div className="w-10 h-10 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center shrink-0">
                 <BedDouble className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-semibold text-nike-mute block uppercase tracking-wider">Bed Setup</span>
-                <span className="font-bold text-sm text-nike-ink dark:text-white">{room.bedType || 'King Bed'}</span>
+                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block uppercase tracking-wider">Bed Setup</span>
+                <span className="font-extrabold text-base text-slate-900 dark:text-white">{room.bedType || 'King Bed'}</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-2 border-t sm:border-t-0 sm:border-l border-nike-hairline-soft dark:border-nike-dark-card pt-3 sm:pt-0 sm:pl-4">
+            <div className="flex items-center gap-3 p-2 border-t sm:border-t-0 sm:border-l border-slate-300 dark:border-slate-700 pt-3 sm:pt-0 sm:pl-4">
               <div className="w-10 h-10 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center shrink-0">
                 <Users className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-semibold text-nike-mute block uppercase tracking-wider">Guest Capacity</span>
-                <span className="font-bold text-sm text-nike-ink dark:text-white">Max {room.capacity} Guests</span>
+                <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block uppercase tracking-wider">Guest Capacity</span>
+                <span className="font-extrabold text-base text-slate-900 dark:text-white">Max {room.capacity} Guests</span>
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@ export const RoomDetail: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {amenitiesList.map((item: string, i: number) => (
-                <div key={i} className="flex items-center gap-2.5 text-xs font-semibold text-nike-ink dark:text-white p-3 bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card rounded-xl">
+                <div key={i} className="flex items-center gap-2.5 text-xs font-semibold text-slate-800 dark:text-white p-3 bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl shadow-2xs">
                   <Check className="w-4 h-4 text-emerald-500 shrink-0" />
                   <span>{item}</span>
                 </div>
@@ -162,29 +162,29 @@ export const RoomDetail: React.FC = () => {
 
         {/* BOOKING SIDEBAR */}
         <div className="lg:col-span-4">
-          <div className="sticky top-24 p-6 bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card rounded-2xl space-y-6 shadow-sm">
+          <div className="sticky top-24 p-6 bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 rounded-2xl space-y-6 shadow-md">
             <div>
-              <span className="text-xs text-nike-mute block">Monthly Rent Rate</span>
-              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-300 block uppercase tracking-wider">Monthly Rent Rate</span>
+              <span className="text-3xl font-extrabold text-blue-600 dark:text-blue-400 block mt-1">
                 {formatCurrency(room.price)}
               </span>
-              <span className="text-xs text-nike-mute block mt-1.5 leading-relaxed">
+              <span className="text-xs text-slate-500 dark:text-slate-300 block mt-1.5 leading-relaxed">
                 Standard monthly lease. Excludes water (18 THB/unit) and electricity (7 THB/unit).
               </span>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-nike-hairline-soft dark:border-nike-dark-card text-xs text-nike-mute">
+            <div className="space-y-2 pt-3 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300">
               <div className="flex justify-between">
                 <span>Building Common Fee</span>
-                <span className="font-semibold text-nike-ink dark:text-white">300 THB / mo</span>
+                <span className="font-bold text-slate-900 dark:text-white">300 THB / mo</span>
               </div>
               <div className="flex justify-between">
                 <span>Lease Commitment</span>
-                <span className="font-semibold text-nike-ink dark:text-white">Monthly / Yearly</span>
+                <span className="font-bold text-slate-900 dark:text-white">Monthly / Yearly</span>
               </div>
               <div className="flex justify-between">
                 <span>Security Deposit</span>
-                <span className="font-semibold text-nike-ink dark:text-white">2 Months Rent</span>
+                <span className="font-bold text-slate-900 dark:text-white">2 Months Rent</span>
               </div>
             </div>
 

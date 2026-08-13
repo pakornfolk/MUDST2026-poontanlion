@@ -21,167 +21,204 @@ export const Navbar: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <>
+    <header className="sticky top-0 z-50 bg-white/95 dark:bg-nike-dark-surface/95 backdrop-blur-md border-b border-slate-200 dark:border-nike-dark-elevated transition-colors duration-200 shadow-2xs">
+
       {/* UTILITY BAR */}
-      <div className="bg-nike-soft-cloud dark:bg-nike-dark-elevated text-nike-ink dark:text-nike-stone text-[12px] font-medium hidden md:block">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 h-9 flex items-center justify-between">
-          <span className="text-nike-mute dark:text-nike-stone flex items-center gap-1.5">
-            <Building2 className="w-3.5 h-3.5" /> Apartment Management (24 Units)
+      <div className="bg-slate-100/90 dark:bg-nike-dark-elevated text-slate-700 dark:text-nike-stone text-[12px] font-medium border-b border-slate-200/70 dark:border-nike-dark-card hidden md:block">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 h-8 flex items-center justify-between">
+          <span className="text-slate-600 dark:text-nike-stone flex items-center gap-1.5 font-medium">
+            <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Apartment Management System (24 Units)
           </span>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={toggleTheme}
-              className="hover:text-nike-ink dark:hover:text-white transition-colors flex items-center gap-1"
-            >
-              {theme === 'dark' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-              <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-            </button>
+          <div className="flex items-center gap-4 text-xs">
+            <span className="text-slate-500 dark:text-slate-400 text-[11px]">Bangkok · 24/7 Security & Support</span>
           </div>
         </div>
       </div>
 
       {/* PRIMARY NAV */}
-      <header className="sticky top-0 z-50 bg-nike-canvas dark:bg-nike-dark-surface border-b border-nike-hairline-soft dark:border-nike-dark-elevated transition-colors duration-200">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 h-14 flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between">
 
-          {/* LOGO */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg text-white font-bold text-xs tracking-wider">
-              AM
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-[15px] tracking-tight text-nike-ink dark:text-white leading-tight">
-                Apartment Management
-              </span>
-              <span className="text-[9px] tracking-wider uppercase text-nike-mute dark:text-nike-stone font-medium leading-none">
-                Bangkok · Unit Rentals
-              </span>
-            </div>
-          </Link>
-
-          {/* DESKTOP NAV LINKS */}
-          <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`text-[15px] font-medium transition-colors py-4 border-b-2 ${
-                  isActive(link.path)
-                    ? 'border-blue-600 text-blue-600 dark:text-blue-400 font-semibold'
-                    : 'border-transparent text-nike-ink dark:text-nike-stone hover:text-nike-mute dark:hover:text-white'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* RIGHT CONTROLS */}
-          <div className="hidden md:flex items-center gap-3">
-            {location.pathname !== '/login' && location.pathname !== '/register' && (
-              <Link
-                to="/rooms"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-nike-soft-cloud dark:bg-nike-dark-elevated text-nike-ink dark:text-white hover:bg-nike-hairline-soft transition-colors"
-                title="Search Units"
-              >
-                <Search className="w-[18px] h-[18px]" />
-              </Link>
-            )}
-
-            {isAuthenticated ? (
-              <div className="flex items-center gap-2">
-                {user?.role === 'admin' ? (
-                  <Link
-                    to="/admin/dashboard"
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-colors flex items-center gap-1.5 shadow-xs"
-                  >
-                    <Shield className="w-4 h-4" /> Admin Panel
-                  </Link>
-                ) : (
-                  <div className="flex items-center gap-2 bg-nike-soft-cloud dark:bg-nike-dark-elevated px-3 py-1.5 rounded-full border border-nike-hairline dark:border-nike-dark-card text-xs font-semibold text-nike-ink dark:text-white">
-                    <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                    <span>{user?.fullname || 'Customer'}</span>
-                  </div>
-                )}
-                <button
-                  onClick={() => { logout(); navigate('/login'); }}
-                  className="text-nike-mute hover:text-rose-600 p-2 rounded-full transition-colors"
-                  title="Sign Out"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="bg-nike-ink dark:bg-white text-white dark:text-nike-ink hover:opacity-90 text-[13px] font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1.5 shadow-xs"
-              >
-                <User className="w-3.5 h-3.5" /> Login / Sign Up
-              </Link>
-            )}
+        {/* LOGO */}
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0 bg-slate-900 dark:bg-slate-950 px-3.5 py-1.5 rounded-xl shadow-xs">
+          <div className="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg text-white font-extrabold text-xs tracking-wider group-hover:bg-blue-500 transition-colors">
+            PA
           </div>
+          <div className="flex flex-col">
+            <span className="font-bold text-[15px] tracking-tight text-white leading-tight pb-2">
+              Poontan Apartment
+            </span>
+            <span className="text-[10px] tracking-wider uppercase text-white font-medium opacity-90 leading-none">
+              Bangkok · Unit Rentals
+            </span>
+          </div>
+        </Link>
 
-          {/* MOBILE MENU BUTTON */}
-          <div className="flex items-center gap-2 md:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-9 h-9 flex items-center justify-center text-nike-ink dark:text-white"
+        {/* DESKTOP NAV LINKS */}
+        <nav className="hidden md:flex items-center gap-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`text-[15px] font-medium transition-all py-2 border-b-2 ${isActive(link.path)
+                  ? 'border-blue-600 text-blue-600 dark:text-blue-400 font-semibold'
+                  : 'border-transparent text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-white'
+                }`}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* RIGHT CONTROLS */}
+        <div className="hidden md:flex items-center gap-3">
+
+          {/* ALWAYS STICKY THEME TOGGLE BUTTON */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold shadow-2xs transition-all active:scale-95 bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300/80 dark:bg-slate-800/90 dark:hover:bg-slate-700 dark:text-slate-100 dark:border-slate-700"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <>
+                <Sun className="w-4 h-4 text-amber-400 fill-amber-400" />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="w-4 h-4 text-indigo-600 fill-indigo-600/20" />
+                <span>Dark</span>
+              </>
+            )}
+          </button>
+
+          {location.pathname !== '/login' && location.pathname !== '/register' && (
+            <Link
+              to="/rooms"
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-nike-dark-elevated dark:text-white dark:hover:bg-slate-800 transition-colors"
+              title="Search Units"
+            >
+              <Search className="w-4 h-4" />
+            </Link>
+          )}
+
+          {isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              {user?.role === 'admin' ? (
+                <Link
+                  to="/admin/dashboard"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full transition-all flex items-center gap-2 shadow-sm shrink-0"
+                >
+                  <Shield className="w-4 h-4" /> Admin Panel
+                </Link>
+              ) : (
+                <div className="flex items-center gap-2 bg-slate-100 dark:bg-nike-dark-elevated px-4 py-2 rounded-full border border-slate-200 dark:border-nike-dark-card text-xs font-semibold text-slate-800 dark:text-white">
+                  <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>{user?.fullname || 'Customer'}</span>
+                </div>
+              )}
+              <button
+                onClick={() => { logout(); navigate('/login'); }}
+                className="text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 p-2 rounded-full transition-colors"
+                title="Sign Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold px-5 py-2.5 rounded-full transition-all flex items-center gap-2 shadow-sm shrink-0"
+            >
+              <User className="w-4 h-4" /> Login / Sign Up
+            </Link>
+          )}
+        </div>
+
+        {/* MOBILE MENU CONTROLS */}
+        <div className="flex items-center gap-2 md:hidden">
+          {/* MOBILE THEME SWITCHER */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full border bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100 dark:border-slate-700 active:scale-95 transition-all"
+            title="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-amber-400 fill-amber-400" />
+            ) : (
+              <Moon className="w-4 h-4 text-indigo-600 fill-indigo-600/20" />
+            )}
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+      </div>
+
+      {/* MOBILE DRAWER */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-nike-dark-surface border-t border-slate-200 dark:border-nike-dark-elevated px-6 pt-4 pb-8 space-y-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block text-[15px] font-medium text-slate-800 dark:text-white py-2 ${isActive(link.path) ? 'font-bold text-blue-600' : ''
+                }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          <div className="flex items-center justify-between py-3 border-t border-b border-slate-200 dark:border-slate-800">
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">Theme Mode</span>
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-slate-300 dark:border-slate-700"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400 fill-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
+              <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
             </button>
           </div>
 
-        </div>
-
-        {/* MOBILE DRAWER */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-nike-canvas dark:bg-nike-dark-surface border-t border-nike-hairline-soft dark:border-nike-dark-elevated px-6 pt-4 pb-8 space-y-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`block text-[15px] font-medium text-nike-ink dark:text-white py-2.5 ${
-                  isActive(link.path) ? 'font-bold text-blue-600' : ''
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <div className="pt-4 border-t border-nike-hairline-soft">
-              {isAuthenticated ? (
-                user?.role === 'admin' ? (
-                  <Link
-                    to="/admin/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-center bg-blue-600 text-white py-2.5 font-semibold text-[14px] rounded-full"
-                  >
-                    Admin Panel
-                  </Link>
-                ) : (
-                  <div className="flex items-center justify-between bg-nike-soft-cloud dark:bg-nike-dark-elevated p-3 rounded-xl">
-                    <span className="text-xs font-semibold text-nike-ink dark:text-white">Hi, {user?.fullname}</span>
-                    <button
-                      onClick={() => { logout(); setMobileMenuOpen(false); navigate('/login'); }}
-                      className="text-xs text-rose-600 font-semibold"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                )
-              ) : (
+          <div className="pt-2">
+            {isAuthenticated ? (
+              user?.role === 'admin' ? (
                 <Link
-                  to="/login"
+                  to="/admin/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-center bg-nike-ink dark:bg-white text-white dark:text-nike-ink py-2.5 font-semibold text-[14px] rounded-full"
+                  className="block w-full text-center bg-blue-600 text-white py-2.5 font-semibold text-[14px] rounded-full shadow-xs"
                 >
-                  Login / Sign Up
+                  Admin Panel
                 </Link>
-              )}
-            </div>
+              ) : (
+                <div className="flex items-center justify-between bg-slate-100 dark:bg-nike-dark-elevated p-3 rounded-xl">
+                  <span className="text-xs font-semibold text-slate-800 dark:text-white">Hi, {user?.fullname}</span>
+                  <button
+                    onClick={() => { logout(); setMobileMenuOpen(false); navigate('/login'); }}
+                    className="text-xs text-rose-600 font-semibold"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block w-full text-center bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-2.5 font-semibold text-[14px] rounded-full shadow-xs"
+              >
+                Login / Sign Up
+              </Link>
+            )}
           </div>
-        )}
-      </header>
-    </>
+        </div>
+      )}
+    </header>
   );
 };

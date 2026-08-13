@@ -323,7 +323,7 @@ export const TenantManagement: React.FC = () => {
                   required
                   value={tenantFormData.fullname || ''}
                   onChange={(e) => setTenantFormData({ ...tenantFormData, fullname: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="e.g. John Doe"
                 />
               </div>
@@ -335,7 +335,7 @@ export const TenantManagement: React.FC = () => {
                   required
                   value={tenantFormData.phone || ''}
                   onChange={(e) => setTenantFormData({ ...tenantFormData, phone: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="081-234-5678"
                 />
               </div>
@@ -346,7 +346,7 @@ export const TenantManagement: React.FC = () => {
                   type="email"
                   value={tenantFormData.email || ''}
                   onChange={(e) => setTenantFormData({ ...tenantFormData, email: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="example@email.com"
                 />
               </div>
@@ -357,7 +357,7 @@ export const TenantManagement: React.FC = () => {
                   type="text"
                   value={tenantFormData.idCardPassport || ''}
                   onChange={(e) => setTenantFormData({ ...tenantFormData, idCardPassport: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="1-1002-XXXXX-XX-X"
                 />
               </div>
@@ -368,7 +368,7 @@ export const TenantManagement: React.FC = () => {
                   type="text"
                   value={tenantFormData.emergencyContact || ''}
                   onChange={(e) => setTenantFormData({ ...tenantFormData, emergencyContact: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   placeholder="Contact Person & Phone Number"
                 />
               </div>
@@ -423,7 +423,7 @@ export const TenantManagement: React.FC = () => {
                       tenantPhone: sel?.phone || '',
                     });
                   }}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                 >
                   {tenants.map(t => (
                     <option key={t.id} value={t.id}>{t.fullname} ({t.phone})</option>
@@ -437,7 +437,7 @@ export const TenantManagement: React.FC = () => {
                   required
                   value={leaseFormData.roomId}
                   onChange={(e) => handleRoomSelectInLease(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                 >
                   {rooms.map(r => (
                     <option key={r.id} value={r.id}>
@@ -455,7 +455,7 @@ export const TenantManagement: React.FC = () => {
                     required
                     value={leaseFormData.checkInDate || ''}
                     onChange={(e) => setLeaseFormData({ ...leaseFormData, checkInDate: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
                 <div>
@@ -465,7 +465,7 @@ export const TenantManagement: React.FC = () => {
                     required
                     value={leaseFormData.checkOutDate || ''}
                     onChange={(e) => setLeaseFormData({ ...leaseFormData, checkOutDate: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
               </div>
@@ -478,7 +478,7 @@ export const TenantManagement: React.FC = () => {
                     required
                     value={leaseFormData.rentAmount || 5500}
                     onChange={(e) => setLeaseFormData({ ...leaseFormData, rentAmount: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
                 <div>
@@ -486,7 +486,7 @@ export const TenantManagement: React.FC = () => {
                   <select
                     value={leaseFormData.billingCycle || 'monthly'}
                     onChange={(e) => setLeaseFormData({ ...leaseFormData, billingCycle: e.target.value as any })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
                   >
                     <option value="monthly">Monthly</option>
                     <option value="yearly">Yearly</option>

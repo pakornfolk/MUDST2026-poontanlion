@@ -87,11 +87,11 @@ export const Home: React.FC = () => {
               <Building2 className="w-4 h-4" /> 24 Modern Apartment Units in Bangkok
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              APARTMENT MANAGEMENT<br />BANGKOK
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md">
+              POONTAN APARTMENT<br />BANGKOK
             </h1>
 
-            <p className="text-base md:text-lg text-nike-stone leading-relaxed">
+            <p className="text-base md:text-lg text-slate-200 leading-relaxed">
               Premium 2-floor apartment complex with 24 units. Fully furnished rooms with balcony, air conditioning, water heater, high-speed Wi-Fi, and 24/7 security access.
             </p>
 
@@ -118,14 +118,14 @@ export const Home: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-bold text-lg text-nike-ink dark:text-white">Unit Search & Filter</h3>
-                <p className="text-xs text-nike-mute">Filter across all 24 units by floor, room type, rent price, and occupancy status</p>
+                <p className="text-xs text-slate-500 dark:text-slate-300">Filter across all 24 units by floor, room type, rent price, and occupancy status</p>
               </div>
             </div>
 
             {isFiltered && (
               <button
                 onClick={handleReset}
-                className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1.5 self-start sm:self-auto"
+                className="px-3.5 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold transition-all active:scale-95 flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
               >
                 <RotateCcw className="w-3.5 h-3.5" /> Reset All Filters
               </button>
@@ -137,26 +137,26 @@ export const Home: React.FC = () => {
             
             {/* Search Input */}
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Search Unit</label>
+              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider block">Search Unit</label>
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-nike-mute" />
+                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400 dark:text-slate-400" />
                 <input
                   type="text"
                   placeholder="Unit no. or type..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 text-xs font-medium bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+                  className="w-full pl-9 pr-3 py-2.5 text-xs font-medium bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-all"
                 />
               </div>
             </div>
 
             {/* Floor Select */}
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Floor Level</label>
+              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider block">Floor Level</label>
               <select
                 value={floorFilter}
                 onChange={(e) => setFloorFilter(e.target.value)}
-                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-all"
               >
                 <option value="all">All Floors (Floor 1 & 2)</option>
                 <option value="1">Floor 1 (Units 101–112)</option>
@@ -166,11 +166,11 @@ export const Home: React.FC = () => {
 
             {/* Room Type Select */}
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Room Type</label>
+              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider block">Room Type</label>
               <select
                 value={roomTypeFilter}
                 onChange={(e) => setRoomTypeFilter(e.target.value)}
-                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-all"
               >
                 <option value="all">All Room Types</option>
                 <option value="Standard Studio">Standard Studio</option>
@@ -182,11 +182,11 @@ export const Home: React.FC = () => {
 
             {/* Rent Price Select */}
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Monthly Rent Rate</label>
+              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider block">Monthly Rent Rate</label>
               <select
                 value={priceFilter}
                 onChange={(e) => setPriceFilter(e.target.value)}
-                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-all"
               >
                 <option value="all">All Rent Rates</option>
                 <option value="under6k">Under ฿6,000 / month</option>
@@ -197,11 +197,11 @@ export const Home: React.FC = () => {
 
             {/* Availability Status Select */}
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-nike-mute uppercase tracking-wider block">Occupancy Status</label>
+              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider block">Occupancy Status</label>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-3 py-2.5 text-xs font-semibold bg-nike-soft-cloud dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card rounded-xl text-nike-ink dark:text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 text-xs font-semibold bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 transition-all"
               >
                 <option value="all">Show All Statuses</option>
                 <option value="Available">Available for Rent</option>

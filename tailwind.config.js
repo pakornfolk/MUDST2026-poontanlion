@@ -9,15 +9,15 @@ export default {
     extend: {
       colors: {
         nike: {
-          ink: '#111111',
+          ink: '#0f172a',
           canvas: '#ffffff',
-          'soft-cloud': '#f5f5f5',
-          charcoal: '#39393b',
-          ash: '#4b4b4d',
-          mute: '#707072',
-          stone: '#9e9ea0',
-          hairline: '#cacacb',
-          'hairline-soft': '#e5e5e5',
+          'soft-cloud': '#f8fafc',
+          charcoal: '#1e293b',
+          ash: '#334155',
+          mute: '#475569',
+          stone: '#64748b',
+          hairline: '#e2e8f0',
+          'hairline-soft': '#f1f5f9',
           sale: '#d30005',
           'sale-deep': '#780700',
           success: '#007d48',
@@ -26,10 +26,10 @@ export default {
           'info-deep': '#0034e3',
           'accent-pink': '#ed1aa0',
           'accent-teal': '#0a7281',
-          // Dark mode surfaces
-          'dark-surface': '#111111',
-          'dark-elevated': '#1a1a1a',
-          'dark-card': '#222222',
+          // High-contrast Dark mode surfaces & borders
+          'dark-surface': '#0b1329',
+          'dark-elevated': '#172036',
+          'dark-card': '#334155',
         },
       },
       fontFamily: {

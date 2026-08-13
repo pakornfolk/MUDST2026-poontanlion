@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'sonner';
+import { toast, Toaster } from 'sonner';
 
 // Context Providers
 import { ThemeProvider } from './context/ThemeContext';
@@ -46,9 +46,9 @@ const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children
 // Admin Layout Wrapper
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="flex min-h-screen bg-nike-canvas dark:bg-nike-dark-surface text-nike-ink dark:text-white">
+    <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-nike-dark-surface text-slate-900 dark:text-white overflow-x-hidden">
       <AdminSidebar />
-      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-6 md:p-10 overflow-y-auto w-full max-w-full">
         {children}
       </main>
     </div>

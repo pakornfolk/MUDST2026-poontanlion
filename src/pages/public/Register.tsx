@@ -33,91 +33,91 @@ export const Register: React.FC = () => {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md bg-nike-canvas dark:bg-nike-dark-card border border-nike-hairline dark:border-nike-dark-card p-8 rounded-3xl space-y-6 shadow-sm">
+      <div className="w-full max-w-md bg-white dark:bg-nike-dark-card border border-slate-200 dark:border-slate-700 p-8 rounded-3xl space-y-6 shadow-md">
         
         <div className="text-center space-y-2">
           <div className="flex items-center gap-3 justify-center mb-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm tracking-wider">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm tracking-wider shadow-xs">
               AM
             </div>
-            <h2 className="text-2xl font-bold text-nike-ink dark:text-white">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
               Create Account
             </h2>
           </div>
-          <p className="text-xs text-nike-stone">Sign up to browse and book apartment units</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Sign up to browse and book apartment units</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Full Name *</label>
+            <label className="block text-xs font-semibold text-slate-800 dark:text-white mb-1">Full Name *</label>
             <div className="relative">
-              <User className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <User className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="text"
                 required
                 value={fullname}
                 onChange={(e) => setFullname(e.target.value)}
                 placeholder="John Doe"
-                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Email Address *</label>
+            <label className="block text-xs font-semibold text-slate-800 dark:text-white mb-1">Email Address *</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <Mail className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="user@example.com"
-                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Phone Number</label>
+            <label className="block text-xs font-semibold text-slate-800 dark:text-white mb-1">Phone Number</label>
             <div className="relative">
-              <Phone className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <Phone className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="081-234-5678"
-                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Password *</label>
+            <label className="block text-xs font-semibold text-slate-800 dark:text-white mb-1">Password *</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Choose a password"
-                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-nike-ink dark:text-white mb-1">Confirm Password *</label>
+            <label className="block text-xs font-semibold text-slate-800 dark:text-white mb-1">Confirm Password *</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-nike-stone absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3.5 top-3" />
               <input
                 type="password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm password"
-                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
               />
             </div>
           </div>
@@ -125,15 +125,15 @@ export const Register: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-colors shadow-xs flex items-center justify-center gap-2 text-xs"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2.5 text-sm"
           >
             <UserPlus className="w-4 h-4" />
             {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
 
-        <div className="text-center pt-2 border-t border-nike-hairline dark:border-nike-dark-card">
-          <p className="text-xs text-nike-stone">
+        <div className="text-center pt-2 border-t border-slate-200 dark:border-slate-700">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Already have an account?{' '}
             <Link to="/login" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
               Log In

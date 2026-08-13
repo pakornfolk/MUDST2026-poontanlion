@@ -34,31 +34,31 @@ export const ApartmentFloorGrid: React.FC<ApartmentFloorGridProps> = ({ rooms, o
     switch (status) {
       case 'Available':
         return {
-          bg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+          bg: 'bg-emerald-500/15 text-emerald-600 dark:text-white border-emerald-500/40 font-semibold',
           dot: 'bg-emerald-500',
           text: 'Available'
         };
       case 'Occupied':
         return {
-          bg: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
+          bg: 'bg-blue-500/15 text-blue-600 dark:text-white border-blue-500/40 font-semibold',
           dot: 'bg-blue-500',
           text: 'Occupied'
         };
       case 'Reserved':
         return {
-          bg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
+          bg: 'bg-amber-500/15 text-amber-600 dark:text-white border-amber-500/40 font-semibold',
           dot: 'bg-amber-500',
           text: 'Reserved'
         };
       case 'Maintenance':
         return {
-          bg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30',
+          bg: 'bg-rose-500/15 text-rose-600 dark:text-white border-rose-500/40 font-semibold',
           dot: 'bg-rose-500',
           text: 'Maintenance'
         };
       default:
         return {
-          bg: 'bg-gray-500/10 text-gray-600 border-gray-500/30',
+          bg: 'bg-gray-500/15 text-gray-600 dark:text-white border-gray-500/40 font-semibold',
           dot: 'bg-gray-500',
           text: status
         };
@@ -72,17 +72,17 @@ export const ApartmentFloorGrid: React.FC<ApartmentFloorGridProps> = ({ rooms, o
           <Home className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           {floorTitle} ({floorRooms.length} units)
         </h3>
-        <div className="flex gap-3 text-xs">
-          <span className="flex items-center gap-1 text-nike-mute">
+        <div className="flex flex-wrap gap-2 text-xs">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/30 text-slate-800 dark:text-white font-bold">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Available
           </span>
-          <span className="flex items-center gap-1 text-nike-mute">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 border border-blue-500/30 text-slate-800 dark:text-white font-bold">
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Occupied
           </span>
-          <span className="flex items-center gap-1 text-nike-mute">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-slate-800 dark:text-white font-bold">
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Reserved
           </span>
-          <span className="flex items-center gap-1 text-nike-mute">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 text-slate-800 dark:text-white font-bold">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Maintenance
           </span>
         </div>
@@ -95,7 +95,7 @@ export const ApartmentFloorGrid: React.FC<ApartmentFloorGridProps> = ({ rooms, o
             <button
               key={room.id}
               onClick={() => handleRoomClick(room)}
-              className="flex flex-col justify-between p-3.5 rounded-xl border border-nike-hairline dark:border-nike-dark-card bg-nike-canvas dark:bg-nike-dark-elevated hover:shadow-lg hover:scale-[1.02] transition-all text-left relative overflow-hidden group"
+              className="flex flex-col justify-between p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/90 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg hover:scale-[1.02] transition-all text-left relative overflow-hidden group shadow-2xs"
             >
               <div className="flex items-center justify-between w-full mb-2">
                 <span className="text-xl font-bold tracking-tight text-nike-ink dark:text-white">
@@ -108,7 +108,7 @@ export const ApartmentFloorGrid: React.FC<ApartmentFloorGridProps> = ({ rooms, o
               </div>
 
               <div className="space-y-1">
-                <div className="text-xs font-medium text-nike-mute dark:text-nike-stone truncate">
+                <div className="text-xs font-medium text-slate-500 dark:text-slate-300 truncate">
                   {room.roomType}
                 </div>
 
@@ -118,17 +118,17 @@ export const ApartmentFloorGrid: React.FC<ApartmentFloorGridProps> = ({ rooms, o
                     {room.currentTenantName}
                   </div>
                 ) : (
-                  <div className="text-xs text-nike-mute/60 dark:text-nike-stone/50 italic">
+                  <div className="text-xs text-slate-400 dark:text-slate-400 italic">
                     (No Tenant)
                   </div>
                 )}
               </div>
 
-              <div className="mt-3 pt-2 border-t border-nike-hairline/60 dark:border-nike-dark-card/60 flex items-center justify-between w-full text-xs">
+              <div className="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between w-full text-xs">
                 <span className="font-semibold text-nike-ink dark:text-white">
                   {formatCurrency(room.price)}
                 </span>
-                <span className="text-[10px] text-nike-mute dark:text-nike-stone">/month</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400">/month</span>
               </div>
             </button>
           );

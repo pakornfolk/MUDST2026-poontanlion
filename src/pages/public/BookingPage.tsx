@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Room } from '../../types';
 import { getRoomById, createBooking } from '../../services/api';
 import { formatCurrency } from '../../utils/formatters';
-import { Building2, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Building2, ArrowLeft, CheckCircle2, Maximize2, BedDouble, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useAuth } from '../../context/AuthContext';
@@ -18,23 +18,23 @@ export const BookingPage: React.FC = () => {
 
   const [formData, setFormData] = useState({
     guestName: user?.fullname || '',
-    guestPhone: '',
     guestEmail: user?.email || '',
+    guestPhone: user?.phone || '',
     checkIn: new Date().toISOString().split('T')[0],
-    checkOut: new Date(Date.now() + 365 * 86400000).toISOString().split('T')[0], // 1 year lease by default
+    checkOut: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     guestCount: 1,
     specialRequests: '',
   });
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toast.error('Please log in to submit a room booking request');
+      toast.error('Please login to book a room');
       navigate('/login');
       return;
     }
 
     if (roomId) {
-      getRoomById(roomId).then(res => {
+      getRoomById(roomId).then((res) => {
         setRoom(res);
         setLoading(false);
       });
@@ -87,18 +87,47 @@ export const BookingPage: React.FC = () => {
 
   return (
     <div className="max-w-[800px] mx-auto px-6 py-10 space-y-8">
-      <Link to={`/rooms/${room.id}`} className="inline-flex items-center gap-2 text-xs font-semibold text-nike-mute hover:text-nike-ink dark:hover:text-white">
+      <Link to={`/rooms/${room.id}`} className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">
         <ArrowLeft className="w-4 h-4" /> Back to Unit Details
       </Link>
 
-      <div className="border-b border-nike-hairline dark:border-nike-dark-card pb-4">
-        <h1 className="text-2xl font-bold text-nike-ink dark:text-white flex items-center gap-2">
-          <Building2 className="w-6 h-6 text-blue-600" />
-          Book Unit {room.roomNumber}
-        </h1>
-        <p className="text-xs text-nike-mute mt-1">
-          {room.roomName} · Floor {room.floor} · Rent: {formatCurrency(room.price)}/month
+      {/* HIGH CONTRAST UNIT OVERVIEW CARD */}
+      <div className="bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 p-6 rounded-3xl space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="inline-block bg-blue-600 text-white text-xs font-bold px-3.5 py-1 rounded-full mb-2">
+              Floor {room.floor} · Unit {room.roomNumber}
+            </div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <Building2 className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+              {room.roomName}
+            </h1>
+          </div>
+          <div className="text-left sm:text-right">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider block">Monthly Rent</span>
+            <span className="text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-blue-400 block mt-0.5">
+              {formatCurrency(room.price)}<span className="text-xs font-medium text-slate-500 dark:text-slate-300">/mo</span>
+            </span>
+          </div>
+        </div>
+
+        {/* DESCRIPTION BOX */}
+        <p className="text-xs md:text-sm font-medium text-slate-800 dark:text-slate-100 leading-relaxed bg-white dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700">
+          {room.description}
         </p>
+
+        {/* SPECS PILLS */}
+        <div className="flex flex-wrap gap-2 pt-1 text-xs">
+          <span className="bg-white dark:bg-slate-900/80 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+            <Maximize2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> {room.sizeSqm} m²
+          </span>
+          <span className="bg-white dark:bg-slate-900/80 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+            <BedDouble className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" /> {room.bedType || 'Queen Bed'}
+          </span>
+          <span className="bg-white dark:bg-slate-900/80 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs">
+            <Users className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" /> Max {room.capacity} Guests
+          </span>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-nike-canvas dark:bg-nike-dark-card p-6 border border-nike-hairline dark:border-nike-dark-card rounded-2xl space-y-6">
@@ -113,7 +142,7 @@ export const BookingPage: React.FC = () => {
               value={formData.guestName}
               onChange={(e) => setFormData({ ...formData, guestName: e.target.value })}
               placeholder="e.g. John Doe"
-              className="w-full px-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+              className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
             />
           </div>
 
@@ -126,7 +155,7 @@ export const BookingPage: React.FC = () => {
                 value={formData.guestPhone}
                 onChange={(e) => setFormData({ ...formData, guestPhone: e.target.value })}
                 placeholder="081-234-5678"
-                className="w-full px-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
               />
             </div>
             <div>
@@ -137,7 +166,7 @@ export const BookingPage: React.FC = () => {
                 value={formData.guestEmail}
                 onChange={(e) => setFormData({ ...formData, guestEmail: e.target.value })}
                 placeholder="john.doe@example.com"
-                className="w-full px-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
               />
             </div>
           </div>
@@ -154,7 +183,7 @@ export const BookingPage: React.FC = () => {
                 required
                 value={formData.checkIn}
                 onChange={(e) => setFormData({ ...formData, checkIn: e.target.value })}
-                className="w-full px-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
               />
             </div>
             <div>
@@ -164,7 +193,7 @@ export const BookingPage: React.FC = () => {
                 required
                 value={formData.checkOut}
                 onChange={(e) => setFormData({ ...formData, checkOut: e.target.value })}
-                className="w-full px-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
               />
             </div>
           </div>
@@ -176,7 +205,7 @@ export const BookingPage: React.FC = () => {
               value={formData.specialRequests}
               onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
               placeholder="e.g., Request parking space, 1-year agreement prefered"
-              className="w-full px-4 py-2.5 text-xs rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+              className="w-full px-4 py-2.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all"
             />
           </div>
         </div>

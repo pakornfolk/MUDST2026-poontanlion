@@ -286,7 +286,7 @@ export const UtilityReceiptManagement: React.FC = () => {
                     required
                     value={billFormData.roomId}
                     onChange={(e) => handleRoomSelectInBill(e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                   >
                     {rooms.map(r => (
                       <option key={r.id} value={r.id}>
@@ -302,7 +302,7 @@ export const UtilityReceiptManagement: React.FC = () => {
                     required
                     value={billFormData.billingMonth || ''}
                     onChange={(e) => setBillFormData({ ...billFormData, billingMonth: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                     placeholder="August 2026"
                   />
                 </div>
@@ -331,7 +331,7 @@ export const UtilityReceiptManagement: React.FC = () => {
                       required
                       value={billFormData.prevWaterMeter || 0}
                       onChange={(e) => setBillFormData({ ...billFormData, prevWaterMeter: Number(e.target.value) })}
-                      className="w-full p-2 rounded-lg bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white"
+                      className="w-full p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
                     />
                   </div>
                   <div>
@@ -341,7 +341,7 @@ export const UtilityReceiptManagement: React.FC = () => {
                       required
                       value={billFormData.currWaterMeter || 0}
                       onChange={(e) => setBillFormData({ ...billFormData, currWaterMeter: Number(e.target.value) })}
-                      className="w-full p-2 rounded-lg bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white font-bold"
+                      className="w-full p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white font-bold"
                     />
                   </div>
                   <div>
@@ -366,7 +366,7 @@ export const UtilityReceiptManagement: React.FC = () => {
                       required
                       value={billFormData.prevElectricMeter || 0}
                       onChange={(e) => setBillFormData({ ...billFormData, prevElectricMeter: Number(e.target.value) })}
-                      className="w-full p-2 rounded-lg bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white"
+                      className="w-full p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
                     />
                   </div>
                   <div>
@@ -376,7 +376,7 @@ export const UtilityReceiptManagement: React.FC = () => {
                       required
                       value={billFormData.currElectricMeter || 0}
                       onChange={(e) => setBillFormData({ ...billFormData, currElectricMeter: Number(e.target.value) })}
-                      className="w-full p-2 rounded-lg bg-nike-canvas dark:bg-nike-dark-elevated border border-nike-hairline dark:border-nike-dark-card text-nike-ink dark:text-white font-bold"
+                      className="w-full p-2 rounded-lg bg-white dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white font-bold"
                     />
                   </div>
                   <div>

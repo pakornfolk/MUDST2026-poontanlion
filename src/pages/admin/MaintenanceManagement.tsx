@@ -359,7 +359,7 @@ export const MaintenanceManagement: React.FC = () => {
                     const rm = rooms.find(r => r.id === e.target.value);
                     setTaskFormData({ ...taskFormData, roomId: e.target.value, roomNumber: rm?.roomNumber || '' });
                   }}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline text-nike-ink dark:text-white"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                 >
                   {rooms.map(r => (
                     <option key={r.id} value={r.id}>Unit {r.roomNumber}</option>
@@ -371,7 +371,7 @@ export const MaintenanceManagement: React.FC = () => {
                 <select
                   value={taskFormData.category}
                   onChange={(e) => setTaskFormData({ ...taskFormData, category: e.target.value as any })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline text-nike-ink dark:text-white"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                 >
                   <option value="Light bulb replacement">Light bulb replacement</option>
                   <option value="Air-con servicing">Air-con servicing</option>
@@ -387,7 +387,7 @@ export const MaintenanceManagement: React.FC = () => {
                   rows={3}
                   value={taskFormData.description || ''}
                   onChange={(e) => setTaskFormData({ ...taskFormData, description: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline text-nike-ink dark:text-white"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                 />
               </div>
             </div>
@@ -412,7 +412,7 @@ export const MaintenanceManagement: React.FC = () => {
                   required
                   value={supplyFormData.name || ''}
                   onChange={(e) => setSupplyFormData({ ...supplyFormData, name: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline text-nike-ink dark:text-white"
+                  className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -423,7 +423,7 @@ export const MaintenanceManagement: React.FC = () => {
                     required
                     value={supplyFormData.stockQuantity || 10}
                     onChange={(e) => setSupplyFormData({ ...supplyFormData, stockQuantity: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline text-nike-ink dark:text-white"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -433,7 +433,7 @@ export const MaintenanceManagement: React.FC = () => {
                     required
                     value={supplyFormData.unitCost || 100}
                     onChange={(e) => setSupplyFormData({ ...supplyFormData, unitCost: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-nike-soft-cloud dark:bg-nike-dark-surface border border-nike-hairline text-nike-ink dark:text-white"
+                    className="w-full p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none transition-all"
                   />
                 </div>
               </div>
