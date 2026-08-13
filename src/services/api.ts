@@ -225,6 +225,10 @@ export const getBookings = async (): Promise<Booking[]> => {
   return fetchJson<Booking[]>(`${API_BASE}/bookings`);
 };
 
+export const getUserBookings = async (email: string): Promise<Booking[]> => {
+  return fetchJson<Booking[]>(`${API_BASE}/bookings/user/${encodeURIComponent(email)}`);
+};
+
 export const createBooking = async (bookingData: Partial<Booking>): Promise<Booking> => {
   return fetchJson<Booking>(`${API_BASE}/bookings`, {
     method: 'POST',
@@ -242,6 +246,17 @@ export const updateBookingStatus = async (bookingId: string, status: string): Pr
     return null;
   }
 };
+
+export const cancelBooking = async (bookingId: string): Promise<Booking | null> => {
+  try {
+    return await fetchJson<Booking>(`${API_BASE}/bookings/${bookingId}/cancel`, {
+      method: 'PUT',
+    });
+  } catch {
+    return null;
+  }
+};
+
 
 // ----------------------------------------------------
 // NOTIFICATIONS API

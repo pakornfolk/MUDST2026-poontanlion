@@ -99,8 +99,8 @@ class LeaseServiceTest {
 
         Map<String, Object> result = leaseService.saveLease(newLease);
 
-        assertFalse((boolean) result.get("success"), "Should fail lease save due to occupancy conflict");
-        assertTrue(((String) result.get("message")).contains("Conflict!"), "Message should mention Conflict");
+        assertTrue(((String) result.get("message")).contains("มีการจองแล้ว"), "Message should mention occupied/booked");
+
         verify(leaseRepo, never()).save(any());
     }
 

@@ -44,7 +44,7 @@ export const BookingPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.guestName || !formData.guestPhone || !formData.guestEmail) {
-      toast.error('Please fill in all contact information');
+      toast.error('กรุณากรอกข้อมูลการติดต่อให้ครบถ้วน');
       return;
     }
 
@@ -63,14 +63,17 @@ export const BookingPage: React.FC = () => {
         specialRequests: formData.specialRequests,
       });
 
-      toast.success(`Booking request submitted! Reference No: ${res.bookingNo}`);
+      toast.success(`ส่งคำขอจองสำเร็จ! หมายเลขอ้างอิง: ${res.bookingNo}`);
       navigate('/payment/' + res.id);
+
     } catch (err: any) {
-      toast.error(err.message || 'Failed to submit booking');
+      const msg = err.message || 'ไม่สามารถส่งคำขอจองได้';
+      toast.error(msg, { duration: 6000 });
     } finally {
       setSubmitting(false);
     }
   };
+
 
   if (loading) {
     return <div className="text-center py-20 text-nike-mute">Loading unit details...</div>;

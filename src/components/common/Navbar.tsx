@@ -18,6 +18,8 @@ export const Navbar: React.FC = () => {
     { name: 'Available Units', path: '/rooms' },
   ];
 
+
+
   const isActive = (path: string) => location.pathname === path;
 
   return (

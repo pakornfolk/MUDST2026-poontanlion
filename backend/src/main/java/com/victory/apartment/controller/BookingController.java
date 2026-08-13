@@ -39,6 +39,11 @@ public class BookingController {
         return repo.findAllByOrderByCreatedAtDesc();
     }
 
+    @GetMapping("/user/{email}")
+    public List<Booking> getByEmail(@PathVariable String email) {
+        return repo.findByGuestEmailIgnoreCaseOrderByCreatedAtDesc(email);
+    }
+
     @PostMapping
     public Booking create(@RequestBody Booking booking) {
         if (booking.getId() == null || booking.getId().isEmpty()) {
@@ -56,6 +61,26 @@ public class BookingController {
             });
         }
 
+        // Prevent overlapping bookings for Pending and Approved requests
+        if (booking.getRoomId() != null) {
+            List<Booking> activeBookings = repo.findByRoomIdAndStatusIn(booking.getRoomId(), List.of("Pending", "Approved"));
+            for (Booking existing : activeBookings) {
+                boolean overlaps = true;
+                if (booking.getCheckIn() != null && booking.getCheckOut() != null
+                        && existing.getCheckIn() != null && existing.getCheckOut() != null) {
+                    overlaps = booking.getCheckIn().compareTo(existing.getCheckOut()) < 0
+                            && booking.getCheckOut().compareTo(existing.getCheckIn()) > 0;
+                }
+                if (overlaps) {
+                    throw new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.CONFLICT,
+                        "ห้องพักยูนิตนี้มีคำขอจองอยู่ระหว่างรออนุมัติหรือได้รับการอนุมัติแล้วในช่วงวันดังกล่าว กรุณาเลือกห้องอื่น หรือรอให้ผู้ดูแลยกเลิกรายการเดิมก่อน"
+                    );
+                }
+
+            }
+        }
+
         Booking saved = repo.save(booking);
 
         // Auto-create notification for Admin with clean emoji prefix
@@ -71,6 +96,23 @@ public class BookingController {
 
         logService.log("Booking Request", String.format("New booking from %s for Unit %s", saved.getGuestName(), saved.getRoomNumber()));
         return saved;
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<Booking> cancelBooking(@PathVariable String id) {
+        return repo.findById(id).map(booking -> {
+            booking.setStatus("Cancelled");
+            if (booking.getRoomId() != null) {
+                roomRepo.findById(booking.getRoomId()).ifPresent(room -> {
+                    if ("Reserved".equals(room.getStatus())) {
+                        room.setStatus("Available");
+                        roomRepo.save(room);
+                    }
+                });
+            }
+            logService.log("Booking Cancelled", String.format("Booking %s cancelled", booking.getBookingNo()));
+            return ResponseEntity.ok(repo.save(booking));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}/status")
@@ -97,4 +139,5 @@ public class BookingController {
             return ResponseEntity.ok(repo.save(booking));
         }).orElse(ResponseEntity.notFound().build());
     }
+
 }

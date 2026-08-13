@@ -20,6 +20,8 @@ import { Login } from './pages/public/Login';
 import { Register } from './pages/public/Register';
 import { PaymentPage } from './pages/public/PaymentPage';
 
+
+
 // Admin Pages
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { TenantManagement } from './pages/admin/TenantManagement';
@@ -80,6 +82,8 @@ export const AppContent: React.FC = () => {
         <Route path="/rooms/:id" element={<PublicLayout><RoomDetail /></PublicLayout>} />
         <Route path="/booking/:roomId" element={<PublicLayout><BookingPage /></PublicLayout>} />
         <Route path="/payment/:bookingId" element={<PublicLayout><PaymentPage /></PublicLayout>} />
+
+
         <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
         <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
 

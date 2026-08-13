@@ -75,10 +75,11 @@ public class LeaseService {
             Lease conflicting = (Lease) conflict.get("conflictingLease");
             result.put("success", false);
             result.put("message", String.format(
-                "Conflict! Unit %s has an overlapping active lease with tenant \"%s\" (%s to %s)",
+                "ยูนิต %s มีการจองแล้วกับผู้เช่า \"%s\" (%s ถึง %s)",
                 leaseData.getRoomNumber(), conflicting.getTenantName(),
                 conflicting.getCheckInDate(), conflicting.getCheckOutDate()
             ));
+
             return result;
         }
 

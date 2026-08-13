@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, String> {
     List<Booking> findAllByOrderByCreatedAtDesc();
+    List<Booking> findByGuestEmailIgnoreCaseOrderByCreatedAtDesc(String guestEmail);
+    List<Booking> findByRoomIdAndStatusIn(String roomId, List<String> statuses);
 }
