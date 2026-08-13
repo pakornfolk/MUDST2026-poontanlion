@@ -24,8 +24,12 @@ jobs:
       - name: Test Backend with JUnit 5
         run: |
           cd backend
-          chmod +x mvnw
-          ./mvnw test
+          chmod +x mvnw 2>/dev/null || true
+          if [ -f "./mvnw" ]; then
+            ./mvnw test
+          else
+            mvn test
+          fi
 
       - name: Set up Node.js 20
         uses: actions/setup-node@v4

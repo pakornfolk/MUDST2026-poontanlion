@@ -31,3 +31,8 @@ dist-ssr
 backend/target/
 backend/data/
 backend/maven_tool/
+
+# Vite temporary files
+*.timestamp-*.mjs
+vite.config.ts.timestamp*
+
