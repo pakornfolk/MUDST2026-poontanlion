@@ -73,14 +73,19 @@ minikube service apartment-frontend-service
 
 #### 1. Backend (Spring Boot API):
 ```powershell
+winget install Apache.Maven >> ติดตั้ง maven ก่อน หากยังไม่เจอให้ใช้คำสั่งต่อไปนี้ -> winget source update 
+winget search Maven >> ดูว่ามี maven ในเครื่องรึยัง
 cd backend
-mvn spring-boot:run        # รัน Backend API Server (Port 8085)
+dir mvnw* >> เช็กว่ามี Maven Wrapper หรือไม่ / ถ้ามีจะะเจอไฟล์ mvnw และ mvnw.cmd
+mvn spring-boot:run        # รัน Backend API Server (Port 8085) >> Tomcat started on port 8085 (http) สังเกตุที่ terminal ถ้าขึ้น แสดงว่ารันแบ้คเอนได้แล้ว
 ```
 
 #### 2. Frontend (React + Vite):
 ```powershell
+#อย่าลืมติดตั้ง Node.js ก่อนนะจ้ะ 
+ืnpm -v / node -v >> เช็คเวอร์ชั่นว่ามีมั้ย # แล้วถ้า node ใช้คอมมานผ่าน และ ถ้า npm -v รันไม่ได้ ให้ใช้คำสั่งนี้ก่อน npm.cmd -v เช็คดูว่าขึ้นเลขเวอร์ชั่นมั้ย หลังจากนั้น ใช้คำสั่งนี้  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned  เพื่อเปลี่ยนมาใช้ npm ถ้ามีให้ขึ้นกด Yes ก็กด  Y ถ้าไม่มีให้ขึ้นก้โอเคแล้ว ปิด powershell แล้วเปิดใหม่ ใช้คอมมานต่อไปได้เลย
 npm install
-npm run dev                # รัน Frontend Dev Server (Port 3000 / 5173)
+npm run dev   # รัน Frontend Dev Server (Port 3000 / 5173)
 ```
 
 ---
